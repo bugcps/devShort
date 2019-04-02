@@ -11,7 +11,7 @@ Header set Referrer-Policy: "strict-origin"
 Header set X-Content-Type-Options: "nosniff"
 
 # Block site from being framed with X-Frame-Options
-Header set X-Frame-Options: "DENY"
+Header set X-Frame-Options: "deny"
 
 # Block pages from loading when they detect reflected XSS attacks
 Header set X-XSS-Protection: "1; mode=block"

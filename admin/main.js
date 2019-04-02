@@ -10,11 +10,18 @@ $('button#add-shortlink').click(function (event) {
     $.post('index.php?add', {
         name: $('input#name').val(),
         link: $('input#link').val()
-    }, function () {
-        $('input#name').val('');
-        $('input#link').val('');
-        getCharts();
+    }, function (data) {
+        if (data === '{"status": "successful"}') {
+            $('input#name').val('');
+            $('input#link').val('');
+            getCharts();
+        } else if (data === '{"status": "unvalid-url"}') {
+            document.getElementById('status').innerHTML = '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>';
+        } else {
+            document.getElementById('status').innerHTML = '<div class="alert alert-danger" role="alert">Error. Please try again.</div>';
+        }
     });
+    $('div#spinner').hide();
 });
 $('a#refresh').click(function (event) {
     event.preventDefault();

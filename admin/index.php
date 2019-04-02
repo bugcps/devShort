@@ -10,13 +10,18 @@ $stats_content = json_decode(file_get_contents($stats_path), true);
 // API functions to delete and add the shortlinks via the admin panel
 if (isset($_GET["delete"]) || isset($_GET["add"])) {
     $name = htmlspecialchars($_POST["name"]);
-    $link = htmlspecialchars($_POST["link"]);
+    $url = htmlspecialchars($_POST["link"]);
 
     if (isset($_GET["delete"])) {
         unset($config_content["shortlinks"][$name]);
         unset($stats_content[$name]);
     } else if (isset($_GET["add"])) {
-        $config_content["shortlinks"][$name] = $link;
+        if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+            echo "{\"status\": \"unvalid-url\"}";
+            exit;
+        }
+        $name = str_replace(" ", "-", $name);
+        $config_content["shortlinks"][$name] = $url;
         $stats_content[$name] = array();
     }
 
@@ -86,6 +91,7 @@ if ($config_content["settings"]["custom_links"]) {
                         <label class="sr-only" for="link">Link (destination)</label>
                         <input type="text" class="form-control mb-2 mr-sm-2" id="link" placeholder="https://example.com">
                         <button type="submit" id="add-shortlink" class="btn btn-primary mb-2">Add</button>
+                        <div id="status"></div>
                     </form>
                 </div>
             </div>

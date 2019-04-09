@@ -112,7 +112,6 @@ if ($config_content["settings"]["custom_links"]) {
     </footer>
 
     <script src="../assets/vendor/frappe-charts/frappe-charts.min.iife.js"></script>
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="main.js"></script>
 
 </body>

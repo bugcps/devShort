@@ -17,7 +17,7 @@ function post(url, data) {
         });
 }
 
-$('button#add-shortlink').click(function (event) {
+document.getElementById('add-shortlink').addEventListener('click', function (event) {
     'use strict';
     event.preventDefault();
     spinner.style.display = '';
@@ -37,7 +37,7 @@ $('button#add-shortlink').click(function (event) {
     });
     spinner.style.display = 'none';
 });
-$('a#refresh').click(function (event) {
+document.getElementById('refresh').addEventListener('click', function (event) {
     'use strict';
     event.preventDefault();
     getCharts();
@@ -66,11 +66,11 @@ function getCharts() {
                 },
                 countLabel: 'Access(es)'
             });
-            $('a#export-' + name).click(function (event) {
+            document.getElementById('export-' + name).addEventListener('click', function (event) {
                 event.preventDefault();
                 heatmap.export();
             });
-            $('a#delete-' + name).click(function (event) {
+            document.getElementById('delete-' + name).addEventListener('click', function (event) {
                 event.preventDefault();
                 post('index.php?delete', {
                     name: name

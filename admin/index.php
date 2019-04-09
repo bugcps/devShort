@@ -9,22 +9,19 @@ $stats_content = json_decode(file_get_contents($stats_path), true);
 
 // API functions to delete and add the shortlinks via the admin panel
 if (isset($_GET["delete"]) || isset($_GET["add"])) {
-    $name = htmlspecialchars($_POST["name"]);
-    $url = htmlspecialchars($_POST["link"]);
-
+    $data = json_decode(file_get_contents("php://input"), true);
     if (isset($_GET["delete"])) {
-        unset($config_content["shortlinks"][$name]);
-        unset($stats_content[$name]);
+        unset($config_content["shortlinks"][$data["name"]]);
+        unset($stats_content[$data["name"]]);
     } else if (isset($_GET["add"])) {
-        if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+        if (!filter_var($data["url"], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
             echo "{\"status\": \"unvalid-url\"}";
             exit;
         }
-        $name = str_replace(" ", "-", $name);
-        $config_content["shortlinks"][$name] = $url;
-        $stats_content[$name] = array();
+        $name = str_replace(" ", "-", $data["name"]);
+        $config_content["shortlinks"][$data["name"]] = $data["url"];
+        $stats_content[$data["name"]] = array();
     }
-
     file_put_contents($config_path, json_encode($config_content, JSON_PRETTY_PRINT));
     file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
     echo "{\"status\": \"successful\"}";
@@ -88,8 +85,8 @@ if ($config_content["settings"]["custom_links"]) {
                     <form class="form-inline">
                         <label class="sr-only" for="name">Name</label>
                         <input type="text" class="form-control mb-2 mr-sm-2" id="name" placeholder="Link1" aria-describedby="name-help">
-                        <label class="sr-only" for="link">Link (destination)</label>
-                        <input type="text" class="form-control mb-2 mr-sm-2" id="link" placeholder="https://example.com">
+                        <label class="sr-only" for="url">URL (destination)</label>
+                        <input type="text" class="form-control mb-2 mr-sm-2" id="url" placeholder="https://example.com">
                         <button type="submit" id="add-shortlink" class="btn btn-primary mb-2">Add</button>
                         <div id="status"></div>
                     </form>
@@ -101,7 +98,7 @@ if ($config_content["settings"]["custom_links"]) {
                 </div>
             </div>
             <div id="charts"></div>
-            <p class="text-center my-4">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.1.0 (Latest: <a href="https://github.com/flokX/devShort/releases"><img src="https://img.shields.io/github/release/flokX/devShort.svg" alt="Latest release"></a>, <a href="https://github.com/flokX/devShort/wiki/Installation#update-or-reinstallation">How to update</a>)</p>
+            <p class="text-center my-4">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.2.0 (Latest: <a href="https://github.com/flokX/devShort/releases"><img src="https://img.shields.io/github/release/flokX/devShort.svg" alt="Latest release"></a>, <a href="https://github.com/flokX/devShort/wiki/Installation#update-or-reinstallation">How to update</a>)</p>
         </div>
     </main>
 
@@ -115,7 +112,6 @@ if ($config_content["settings"]["custom_links"]) {
     </footer>
 
     <script src="../assets/vendor/frappe-charts/frappe-charts.min.iife.js"></script>
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="main.js"></script>
 
 </body>

@@ -54,7 +54,8 @@ function getCharts() {
     }).then(function (response) {
         return response.json();
     }).then(function (json) {
-        $.each(json, function (name, data) {
+        for (let name in json) {
+            let data = json[name];
             chartsDiv.insertAdjacentHTML('beforeend', '<div id="card-' + name + '" class="card mb-3"><div class="card-body"><div id="heatmap-' + name + '" class="heatmap"></div></div><div class="card-footer text-center text-muted"><a id="export-' + name + '" href="#download" class="card-link">Download chart</a><a id="delete-' + name + '" href="#delete" class="card-link">Delete shortlink and dataset</a></div></div>');
             let heatmap = new frappe.Chart('div#heatmap-' + name, {
                 type: 'heatmap',
@@ -78,7 +79,7 @@ function getCharts() {
                     document.getElementById('card-' + name).remove();
                 });
             });
-        });
+        }
         spinner.style.display = 'none';
     });
 }

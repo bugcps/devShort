@@ -5,6 +5,12 @@
 $base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "admin"));
 $config_content = json_decode(file_get_contents($base_path . DIRECTORY_SEPARATOR . "config.json"), true);
 
+// Counts the access
+$filename = $base_path . DIRECTORY_SEPARATOR . "stats.json";
+$stats = json_decode(file_get_contents($filename), true);
+$stats["Index"][mktime(0, 0, 0)] += 1;
+file_put_contents($filename, json_encode($stats, JSON_PRETTY_PRINT));
+
 // Generator for page customization
 $links_string = "";
 if ($config_content["settings"]["custom_links"]) {

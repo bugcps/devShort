@@ -7,6 +7,14 @@ $config_content = json_decode(file_get_contents($config_path), true);
 $stats_path = __DIR__ . DIRECTORY_SEPARATOR . "stats.json";
 $stats_content = json_decode(file_get_contents($stats_path), true);
 
+// Filter the names that the admin interface doesn't break
+function filter_name($nameRaw) {
+    $name = filter_var($nameRaw, FILTER_SANITIZE_STRING);
+    $name = str_replace(" ", "-", $name);
+    $name = preg_replace("/[^A-Za-z0-9-_]/", "", $name);
+    return $name;
+}
+
 // API functions to delete and add the shortlinks via the admin panel
 if (isset($_GET["delete"]) || isset($_GET["add"])) {
     $data = json_decode(file_get_contents("php://input"), true);
@@ -14,13 +22,14 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         unset($config_content["shortlinks"][$data["name"]]);
         unset($stats_content[$data["name"]]);
     } else if (isset($_GET["add"])) {
-        if (!filter_var($data["url"], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+        $filtered = array("name" => filter_name($data["name"]),
+                          "url" => filter_var($data["url"], FILTER_SANITIZE_URL));
+        if (!filter_var($filtered["url"], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
             echo "{\"status\": \"unvalid-url\"}";
             exit;
         }
-        $name = str_replace(" ", "-", $data["name"]);
-        $config_content["shortlinks"][$data["name"]] = $data["url"];
-        $stats_content[$data["name"]] = array();
+        $config_content["shortlinks"][$filtered["name"]] = $filtered["url"];
+        $stats_content[$filtered["name"]] = array();
     }
     file_put_contents($config_path, json_encode($config_content, JSON_PRETTY_PRINT));
     file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));

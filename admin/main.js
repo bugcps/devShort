@@ -2,6 +2,7 @@ var currentDate = new Date();
 var startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
 var spinner = document.getElementById('spinner');
 var chartsDiv = document.getElementById('charts');
+var statusDiv = document.getElementById('status');
 
 function post(url, data) {
     'use strict';
@@ -17,7 +18,7 @@ function post(url, data) {
         });
 }
 
-document.getElementById('add-shortlink').addEventListener('click', function (event) {
+document.getElementById('add-form').addEventListener('submit', function (event) {
     'use strict';
     event.preventDefault();
     spinner.style.display = '';
@@ -27,12 +28,15 @@ document.getElementById('add-shortlink').addEventListener('click', function (eve
     }).then(function (data) {
         if (data.status === 'successful') {
             document.getElementById('name').value = '';
-            document.getElementById('url').value = '';
+            document.getElementById('url').value = 'https://';
+            if (statusDiv.firstChild) {
+                statusDiv.firstChild.remove();
+            }
             getCharts();
         } else if (data.status === 'unvalid-url') {
-            document.getElementById('status').innerHTML = '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>';
+            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
         } else {
-            document.getElementById('status').innerHTML = '<div class="alert alert-danger" role="alert">Error. Please try again.</div>';
+            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
         }
     });
     spinner.style.display = 'none';
@@ -65,7 +69,8 @@ function getCharts() {
                     start: startDate,
                     end: currentDate
                 },
-                countLabel: 'Access(es)'
+                countLabel: 'Access(es)',
+                discreteDomains: 0
             });
             document.getElementById('export-' + name).addEventListener('click', function (event) {
                 event.preventDefault();

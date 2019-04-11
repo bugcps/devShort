@@ -24,7 +24,7 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
     } else if (isset($_GET["add"])) {
         $filtered = array("name" => filter_name($data["name"]),
                           "url" => filter_var($data["url"], FILTER_SANITIZE_URL));
-        if (!filter_var($filtered["url"], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) {
+        if (!filter_var($filtered["url"], FILTER_VALIDATE_URL)) {
             echo "{\"status\": \"unvalid-url\"}";
             exit;
         }
@@ -35,25 +35,6 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
     file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
     echo "{\"status\": \"successful\"}";
     exit;
-}
-
-// Check if there are links which are only in the config.json or only in the stats.json
-$changed = false;
-foreach ($config_content["shortlinks"] as $name => $url) {
-    if (!isset($stats_content[$name])) {
-        $stats_content[$name] = array();
-        $changed = true;
-    }
-}
-foreach ($stats_content as $name => $stats) {
-    if (!isset($config_content["shortlinks"][$name]) && $name !== "404-request" && $name !== "Index") {
-        unset($stats_content[$name]);
-        $changed = true;
-    }
-}
-if ($changed) {
-    file_put_contents($config_path, json_encode($config_content, JSON_PRETTY_PRINT));
-    file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
 }
 
 // Generator for page customization
@@ -85,18 +66,17 @@ if ($config_content["settings"]["custom_links"]) {
 
     <main role="main" class="flex-shrink-0">
         <div class="container">
-            <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?>
-            </h1>
+            <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?></h1>
             <h4 class="mb-4 text-center">admin panel</h4>
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Add shortlink <small><a id="refresh" href="#refresh" class="card-link">Refresh charts</a></small></h5>
-                    <form class="form-inline">
+                    <form class="form-inline" id="add-form">
                         <label class="sr-only" for="name">Name</label>
-                        <input type="text" class="form-control mb-2 mr-sm-2" id="name" placeholder="Link1" aria-describedby="name-help">
+                        <input type="text" class="form-control mb-2 mr-sm-2" id="name" placeholder="Link1" required>
                         <label class="sr-only" for="url">URL (destination)</label>
-                        <input type="text" class="form-control mb-2 mr-sm-2" id="url" placeholder="https://example.com">
-                        <button type="submit" id="add-shortlink" class="btn btn-primary mb-2">Add</button>
+                        <input type="url" class="form-control mb-2 mr-sm-2" id="url" placeholder="https://example.com" value="https://" required>
+                        <button type="submit" class="btn btn-primary mb-2">Add</button>
                         <div id="status"></div>
                     </form>
                 </div>

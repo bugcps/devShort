@@ -2,13 +2,10 @@
 
 [![GitHub - Release](https://img.shields.io/github/release/flokX/devShort.svg)](https://github.com/flokX/devShort/releases) [![GitHub - License](https://img.shields.io/github/license/flokX/devShort.svg)](https://github.com/flokX/devShort/blob/master/LICENSE) ![Privacy frienly](https://img.shields.io/badge/privacy-friendly-brightgreen.svg)
 
-The devShort URL shortener is the perfect choice for web developers, admins and all professionals.
+The devShort URL shortener is the perfect choice for web developers, admins and professionals. It is simple and privacy friendly but very powerful since it focuses on the most important things.
 
 What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devShort/wiki/What-is-URL-shortening%3F) for more information.
 
-| Admin panel | Index       |
-|:-----------:|:-----------:|
-| ![Screenshot - Admin panel](https://raw.githubusercontent.com/flokX/devShort/master/development/devShort-admin-panel.png) | ![Screenshot - Index](https://raw.githubusercontent.com/flokX/devShort/master/development/devShort-index.png) |
 
 ## 1-2-3 Main features
 
@@ -16,17 +13,19 @@ What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devSh
     * No database required
     * Fast installation
     * Integrated statistics viewer
-2. Widely configurably for your needs with one file only
+     * No feature overhead
+2. Widely configurably for your needs with only one file
 3. Privacy friendly
     * Only the access count and date is tracked
     * The whole code is verifiable in minutes
+    * Privacy and security by default
 
 
 ## 1-2-3 Reasons to install
 
-1. You know how many people are using your links, but it's very privacy friendly
-2. Quite easy to install, upgrade and maintain because there are only 13 files with a total size under 1 MB
-3. The appearence of the public pages can be changed easily with the `admin/config.json` file.
+1. Give everyone a good-looking and easy to remember link
+2. Know when and how many times the links are used
+3. Have no hassle with the software because it's slim and easy to configure
 
 
 ## 1-2-3 Click installation
@@ -36,6 +35,13 @@ What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devSh
 3. Run the `installer.php`
 
 That's it! If you want to know what devShort can do visit our [wiki](https://github.com/flokX/devShort/wiki).
+
+
+## Screenshots
+
+| Admin panel | Index       |
+|:-----------:|:-----------:|
+| ![Screenshot - Admin panel](https://raw.githubusercontent.com/flokX/devShort/master/development/devShort-admin-panel.png) | ![Screenshot - Index](https://raw.githubusercontent.com/flokX/devShort/master/development/devShort-index.png) |
 
 
 ## About

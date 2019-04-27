@@ -33,7 +33,6 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
     exit;
 } else if ($short === "") {
     header("Location: index.php", $http_response_code=301);
-    count_access($base_path, "Index");
     exit;
 } else {
     header("HTTP/1.1 404 Not Found");
@@ -77,7 +76,7 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
                 </ol>
             </nav>
             <h1 class="mt-5">404 | Shortlink Not Found.</h1>
-            <p class="lead">The requested shortlink <i><?php echo $short; ?></i> was not found on this server. It was either deleted, expired, misspelled, or eaten by a monster.</p>
+            <p class="lead">The requested shortlink <i><?php echo $short; ?></i> was not found on this server. It was either deleted, expired, misspelled or eaten by a monster.</p>
         </div>
     </main>
 

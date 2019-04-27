@@ -1,8 +1,8 @@
-var currentDate = new Date();
-var startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
-var spinner = document.getElementById('spinner');
-var chartsDiv = document.getElementById('charts');
-var statusDiv = document.getElementById('status');
+const currentDate = new Date();
+const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
+const spinner = document.getElementById('spinner');
+const chartsDiv = document.getElementById('charts');
+const statusDiv = document.getElementById('status');
 
 function post(url, data) {
     'use strict';

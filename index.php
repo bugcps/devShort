@@ -48,11 +48,13 @@ if ($config_content["settings"]["custom_links"]) {
             </nav>
             <h1 class="mt-5"><?php echo $config_content["settings"]["name"]; ?></h1>
             <p class="lead">This is a shortlink service. You need a valid shortlink to get redirected.</p>
-            <div class="btn-group" role="group" aria-label="Next actions">
-                <a class="btn btn-secondary" href="<?php echo $config_content["settings"]["home_link"]; ?>" role="button">Go to home</a>
-                <a class="btn btn-secondary" href="https://github.com/flokX/devShort/wiki/What-is-URL-shortening%3F" role="button">Link shortener explanation</a>
-                <a class="btn btn-secondary" href="admin" role="button">Admin panel</a>
-            </div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="https://github.com/flokX/devShort/wiki/What-is-URL-shortening%3F">What is URL shortening?</a></li>
+                <li class="list-inline-item">-</li>
+                <li class="list-inline-item"><a href="<?php echo $config_content["settings"]["home_link"]; ?>">Home page</a></li>
+                <li class="list-inline-item">-</li>
+                <li class="list-inline-item"><a href="admin">Admin panel</a></li>
+            </ul>
         </div>
     </main>
 

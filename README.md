@@ -49,3 +49,5 @@ That's it! If you want to know what devShort can do visit our [wiki](https://git
 Maintainer: Florian Kaldowski ([flokX](https://github.com/flokX))
 
 License: The MIT license
+
+Third-party credits: Favicon by [IO-Images](https://pixabay.com/images/id-1083508/); [Bootstrap libary](https://getbootstrap.com); [Frappe Charts libary](https://github.com/frappe/charts)

@@ -8,6 +8,7 @@ function post(url, data) {
     'use strict';
     return fetch(url, {
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -54,13 +55,14 @@ function getCharts() {
         chartsDiv.firstChild.remove();
     }
     fetch('stats.json', {
-        cache: 'no-cache'
+        cache: 'no-cache',
+        credentials: 'same-origin'
     }).then(function (response) {
         return response.json();
     }).then(function (json) {
         for (let name in json) {
             let data = json[name];
-            chartsDiv.insertAdjacentHTML('beforeend', '<div id="card-' + name + '" class="card mb-3"><div class="card-body"><div id="heatmap-' + name + '" class="heatmap"></div></div><div class="card-footer text-center text-muted"><a id="export-' + name + '" href="#download" class="card-link">Download chart</a><a id="delete-' + name + '" href="#delete" class="card-link">Delete shortlink and dataset</a></div></div>');
+            chartsDiv.insertAdjacentHTML('beforeend', '<div id="card-' + name + '" class="card text-center mb-3"><div class="card-header">' + name + '</div><div class="card-body p-2"><div id="heatmap-' + name + '" class="overflow-auto"></div></div><div class="card-footer text-muted"><a id="export-' + name + '" href="#export" class="card-link">Excport chart</a><a id="delete-' + name + '" href="#delete" class="card-link">Delete shortlink and dataset</a></div></div>');
             let heatmap = new frappe.Chart('div#heatmap-' + name, {
                 type: 'heatmap',
                 title: 'Access statistics for ' + name,

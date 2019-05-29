@@ -87,7 +87,7 @@ if ($config_content["settings"]["custom_links"]) {
                 </div>
             </div>
             <div id="charts"></div>
-            <p class="text-center mt-4 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.3.0 (Latest: <a href="https://github.com/flokX/devShort/releases"><img src="https://img.shields.io/github/release/flokX/devShort.svg" alt="Latest release"></a>, <a href="https://github.com/flokX/devShort/wiki/Installation#update-or-reinstallation">How to update</a>)</p>
+            <p class="text-center mt-4 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.2.1 (Latest: <a href="https://github.com/flokX/devShort/releases"><img src="https://img.shields.io/github/release/flokX/devShort.svg" alt="Latest release"></a>, <a href="https://github.com/flokX/devShort/wiki/Installation#update-or-reinstallation">How to update</a>)</p>
         </div>
     </main>
 

@@ -1,7 +1,6 @@
 # Headers
 
 # Only connect to this site and subdomains via HTTPS for the next two years
-# If your page have no https enabled, comment this line.
 Header set Strict-Transport-Security: "max-age=63072000; includeSubDomains"
 
 # Send only the domain as referrer

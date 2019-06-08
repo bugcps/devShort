@@ -33,20 +33,20 @@ What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devSh
 
 ## 1-2-3 Click installation
 
-1. Download the latest [release](https://github.com/flokX/devShort/releases) and copy the files into the directory
+1. Download the latest [release](https://github.com/flokX/devShort/releases) and upload it to the desired installation place
 2. Insert a admin password in the `admin/config.json`
 3. Run the `installer.php`
 
-That's it! If you want to know what devShort can do visit our [wiki](https://github.com/flokX/devShort/wiki).
+That's it! If you want to know what else devShort can do, visit our [wiki](https://github.com/flokX/devShort/wiki).
 
 
 ## Screenshots
 
-If you want to see devShort live and in action, then check out our [demo](https://devshort.florian-kaldowski.de).
+To see devShort live and in action check out our [demo](https://devshort.florian-kaldowski.de).
 
 | Admin panel | Index       |
 |:-----------:|:-----------:|
-| ![Screenshot - Admin panel top](https://devshort.florian-kaldowski.de/repo-assets/admin-panel-top.png) ![Screenshot - Admin panel bottom](https://devshort.florian-kaldowski.de/repo-assets/admin-panel-bottom.png) | ![Screenshot - Index](https://devshort.florian-kaldowski.de/repo-assets/index.png) |
+| ![Screenshot - Admin panel](https://devshort.florian-kaldowski.de/repo-assets/admin-panel.png) | ![Screenshot - Index](https://devshort.florian-kaldowski.de/repo-assets/index.png) |
 
 
 ## About

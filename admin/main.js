@@ -62,7 +62,7 @@ function getCharts() {
     }).then(function (json) {
         for (let name in json) {
             let data = json[name];
-            chartsDiv.insertAdjacentHTML('beforeend', '<div id="card-' + name + '" class="card text-center mb-3"><div class="card-header">' + name + '</div><div class="card-body p-2"><div id="heatmap-' + name + '" class="overflow-auto"></div></div><div class="card-footer text-muted"><a id="export-' + name + '" href="#export" class="card-link">Excport chart</a><a id="delete-' + name + '" href="#delete" class="card-link">Delete shortlink and dataset</a></div></div>');
+            chartsDiv.insertAdjacentHTML('beforeend', '<div id="card-' + name + '" class="card text-center mb-3"><div class="card-header">' + name + '</div><div class="card-body p-2"><div id="heatmap-' + name + '" class="overflow-auto"></div></div><div class="card-footer text-muted"><a id="export-' + name + '" href="#export" class="card-link">Export chart</a><a id="delete-' + name + '" href="#delete" class="card-link">Delete shortlink and dataset</a></div></div>');
             let heatmap = new frappe.Chart('div#heatmap-' + name, {
                 type: 'heatmap',
                 title: 'Access statistics for ' + name,

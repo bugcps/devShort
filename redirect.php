@@ -3,15 +3,9 @@
 // All relevant changes can be made in the data file. Please read the docs: https://github.com/flokX/devShort/wiki
 
 $short = htmlspecialchars($_GET["short"]);
-$return_404 = array("favicon.ico", "assets/vendor/bootstrap/bootstrap.min.css.map", "assets/vendor/frappe-charts/frappe-charts.min.iife.js.map");
 
-// If the robots.txt is requested, return it
-if ($short === "robots.txt") {
-	header("Content-Type: text/plain; charset=utf-8");
-	echo "User-agent: *\n";
-	echo "Disallow: /\n";
-	exit;
-} else if (in_array($short, $return_404)) {
+$return_404 = array("favicon.ico", "assets/vendor/bootstrap/bootstrap.min.css.map", "assets/vendor/frappe-charts/frappe-charts.min.iife.js.map");
+if (in_array($short, $return_404)) {
     header("HTTP/1.1 404 Not Found");
     exit;
 }

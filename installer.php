@@ -51,14 +51,14 @@ require valid-user";
 ?>
 
 <!doctype html>
-<html lang="en" class="h-100">
+<html class="h-100" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" content="The devShort team">
-    <link rel="icon" href="assets/icon.png">
+    <link href="assets/icon.png" rel="icon">
     <title>Installer | devShort</title>
     <link href="assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="assets/main.css" rel="stylesheet">
@@ -66,7 +66,7 @@ require valid-user";
 
 <body class="d-flex flex-column h-100">
 
-    <main role="main" class="flex-shrink-0">
+    <main class="flex-shrink-0">
         <div class="container">
             <nav class="mt-3" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -90,7 +90,7 @@ require valid-user";
         </div>
     </main>
 
-    <footer class="footer mt-auto py-3">
+    <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-muted">&copy; <?php echo date("Y") ?> <a href="https://github.com/flokX/devShort">devShort</a></span>

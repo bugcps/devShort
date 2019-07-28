@@ -42,6 +42,7 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
     });
     spinner.style.display = 'none';
 });
+
 document.getElementById('refresh').addEventListener('click', function (event) {
     'use strict';
     event.preventDefault();

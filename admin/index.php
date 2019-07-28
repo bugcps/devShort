@@ -49,14 +49,14 @@ if ($config_content["settings"]["custom_links"]) {
 ?>
 
 <!doctype html>
-<html lang="en" class="h-100">
+<html class="h-100" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" content="<?php echo $config_content["settings"]["author"]; ?> and the devShort team">
-    <link rel="icon" href="../<?php echo $config_content["settings"]["favicon"]; ?>">
+    <link href="../<?php echo $config_content["settings"]["favicon"]; ?>" rel="icon">
     <title>Admin panel | <?php echo $config_content["settings"]["name"]; ?></title>
     <link href="../assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/main.css" rel="stylesheet">
@@ -64,25 +64,25 @@ if ($config_content["settings"]["custom_links"]) {
 
 <body class="d-flex flex-column h-100">
 
-    <main role="main" class="flex-shrink-0">
+    <main class="flex-shrink-0">
         <div class="container">
             <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?></h1>
             <h4 class="mb-4 text-center">admin panel</h4>
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Add shortlink <small><a id="refresh" href="#refresh" class="card-link">Refresh charts</a></small></h5>
+                    <h5 class="card-title">Add shortlink <small><a class="card-link" id="refresh" href="#refresh">Refresh charts</a></small></h5>
                     <form class="form-inline" id="add-form">
                         <label class="sr-only" for="name">Name</label>
-                        <input type="text" class="form-control mb-2 mr-sm-2" id="name" placeholder="Link1" required>
+                        <input class="form-control mb-2 mr-sm-2" id="name" type="text" placeholder="Link1" required>
                         <label class="sr-only" for="url">URL (destination)</label>
-                        <input type="url" class="form-control mb-2 mr-sm-2" id="url" placeholder="https://example.com" value="https://" required>
-                        <button type="submit" class="btn btn-primary mb-2">Add</button>
+                        <input class="form-control mb-2 mr-sm-2" id="url" type="url" placeholder="https://example.com" required>
+                        <button class="btn btn-primary mb-2" type="submit">Add</button>
                         <div id="status"></div>
                     </form>
                 </div>
             </div>
             <div class="d-flex justify-content-center">
-                <div id="spinner" class="spinner-border text-primary" role="status">
+                <div class="spinner-border text-primary" id="spinner" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
@@ -91,7 +91,7 @@ if ($config_content["settings"]["custom_links"]) {
         </div>
     </main>
 
-    <footer class="footer mt-auto py-3">
+    <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-muted">&copy; <?php echo date("Y") . " " . $config_content["settings"]["author"]; ?> and <a href="https://github.com/flokX/devShort">devShort</a></span>

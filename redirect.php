@@ -45,14 +45,14 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
 ?>
 
 <!doctype html>
-<html lang="en" class="h-100">
+<html class="h-100" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" content="<?php echo $config_content["settings"]["author"]; ?> and the devShort team">
-    <link rel="icon" href="<?php echo $config_content["settings"]["favicon"]; ?>">
+    <link href="<?php echo $config_content["settings"]["favicon"]; ?>" rel="icon">
     <title>404 | <?php echo $config_content["settings"]["name"]; ?></title>
     <link href="assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="assets/main.css" rel="stylesheet">
@@ -60,7 +60,7 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
 
 <body class="d-flex flex-column h-100">
 
-    <main role="main" class="flex-shrink-0">
+    <main class="flex-shrink-0">
         <div class="container">
             <nav class="mt-3" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -74,7 +74,7 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
         </div>
     </main>
 
-    <footer class="footer mt-auto py-3">
+    <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-muted">&copy; <?php echo date("Y") . " " . $config_content["settings"]["author"]; ?> and <a href="https://github.com/flokX/devShort">devShort</a></span>

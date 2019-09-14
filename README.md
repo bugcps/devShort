@@ -17,7 +17,7 @@ What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devSh
     * Fast installation
     * Integrated statistics viewer
      * No feature overhead
-2. Widely configurably for your needs with only one file
+2. Widely configurable for your needs with only one file
 3. Privacy friendly
     * Only the access count and date is tracked
     * The whole code is verifiable in minutes
@@ -55,4 +55,4 @@ Maintainer: Florian Kaldowski ([flokX](https://github.com/flokX))
 
 License: The MIT license
 
-Third-party credits: Favicon by [IO-Images](https://pixabay.com/images/id-1083508/); [Bootstrap libary](https://getbootstrap.com); [Frappe Charts libary](https://github.com/frappe/charts)
+Third-party credits: [IO-Images](https://pixabay.com/users/io-images-1096650); [Bootstrap](https://getbootstrap.com) and [Frappe Charts](https://github.com/frappe/charts)

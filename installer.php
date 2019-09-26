@@ -8,20 +8,6 @@ $config_content = json_decode(file_get_contents($config_path), true);
 
 if ($config_content["installer"]["password"]) {
 
-    // Create root .htaccess with the rewrite rules
-    $installation_path = rtrim($_SERVER["REQUEST_URI"], "installer.php");
-    $root_htaccess = "
-
-# The entrys below were set by the installer.
-
-# Rewrite rule to get the short URLs
-RewriteEngine On
-RewriteBase $installation_path
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ {$installation_path}redirect.php?short=$1 [L]";
-    file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . ".htaccess", $root_htaccess, FILE_APPEND);
-
     // Create the .htpasswd for the secure directory. If already a hashed password is in the data.json file, copy it.
     $htpasswd_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "admin", ".htpasswd"));
     $admin_password = $config_content["installer"]["password"];

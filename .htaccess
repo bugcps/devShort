@@ -17,5 +17,11 @@ Header set X-XSS-Protection: "1; mode=block"
 
 # Other
 
+# Rewrite rule to get the short URLs
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ redirect.php?short=$1 [L]
+
 # Disable directory indexing
 Options -Indexes

@@ -16,7 +16,7 @@ What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devSh
     * No database required
     * Fast installation
     * Integrated statistics viewer
-     * No feature overhead
+    * No feature overhead
 2. Widely configurable for your needs with only one file
 3. Privacy friendly
     * Only the access count and date is tracked
@@ -46,7 +46,7 @@ To see devShort live and in action check out our [demo](https://devshort.florian
 
 | Admin panel | Index       |
 |:-----------:|:-----------:|
-| ![Screenshot - Admin panel](https://devshort.florian-kaldowski.de/repo-assets/admin-panel.png) | ![Screenshot - Index](https://devshort.florian-kaldowski.de/repo-assets/index.png) |
+| ![Screenshot - Admin panel](https://raw.githubusercontent.com/flokX/devShort/master/development/admin-panel.png) | ![Screenshot - Index](https://raw.githubusercontent.com/flokX/devShort/master/development/index.png) |
 
 
 ## About

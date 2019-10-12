@@ -7,7 +7,7 @@ The devShort URL shortener is the perfect choice for web developers, admins and 
 What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devShort/wiki/What-is-URL-shortening%3F) for more information.
 
 
-### Jump to our [demo](https://devshort.florian-kaldowski.de)!
+### Jump to our [demo](https://devshort.flokx.dev)!
 
 
 ## 1-2-3 Main features
@@ -42,7 +42,7 @@ That's it! If you want to know what else devShort can do, visit our [wiki](https
 
 ## Screenshots
 
-To see devShort live and in action check out our [demo](https://devshort.florian-kaldowski.de).
+To see devShort live and in action check out our [demo](https://devshort.flokx.dev).
 
 | Admin panel | Index       |
 |:-----------:|:-----------:|
@@ -51,7 +51,9 @@ To see devShort live and in action check out our [demo](https://devshort.florian
 
 ## About
 
-Maintainer: Florian Kaldowski ([flokX](https://github.com/flokX))
+#### See also [devStats](https://github.com/flokX/devStats) - web analytics tool - part of the devX family
+
+Maintainer:  [flokX](https://github.com/flokX)
 
 License: The MIT license
 

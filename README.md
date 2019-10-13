@@ -51,8 +51,6 @@ To see devShort live and in action check out our [demo](https://devshort.flokx.d
 
 ## About
 
-#### See also [devStats](https://github.com/flokX/devStats) - web analytics tool - part of the devX family
-
 Maintainer:  [flokX](https://github.com/flokX)
 
 License: The MIT license

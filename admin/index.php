@@ -82,6 +82,14 @@ if ($config_content["settings"]["custom_links"]) {
                     </form>
                 </div>
             </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Search</h5>
+                    <form>
+                        <input class="form-control" id="search-bar" type="text">
+                    </form>
+                </div>
+            </div>
             <div class="d-flex justify-content-center">
                 <div class="spinner-border text-primary" id="spinner" role="status">
                     <span class="sr-only">Loading...</span>

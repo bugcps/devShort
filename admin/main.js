@@ -43,6 +43,19 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
     spinner.style.display = 'none';
 });
 
+var searchBox = document.getElementById('search-bar');
+searchBox.addEventListener('input', function (event) {
+    'use strict';
+    for (let node of chartsDiv.childNodes) {
+        let linkName = node.firstElementChild.innerHTML.toLowerCase();
+        if (linkName.includes(searchBox.value.toLowerCase())) {
+            node.style.display = 'block';
+        } else {
+            node.style.display = 'none';
+        }
+    }
+});
+
 document.getElementById('refresh').addEventListener('click', function (event) {
     'use strict';
     event.preventDefault();
@@ -51,7 +64,7 @@ document.getElementById('refresh').addEventListener('click', function (event) {
 
 function getCharts() {
     'use strict';
-    spinner.style.display = '';
+    spinner.style.display = 'block';
     while (chartsDiv.firstChild) {
         chartsDiv.firstChild.remove();
     }

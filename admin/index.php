@@ -74,10 +74,10 @@ if ($config_content["settings"]["custom_links"]) {
                     <h5 class="card-title">Add shortlink <small><a class="card-link" id="refresh" href="#refresh">Refresh charts</a></small></h5>
                     <form class="form-inline" id="add-form">
                         <label class="sr-only" for="name">Name</label>
-                        <input class="form-control mb-2 mr-sm-2" id="name" type="text" placeholder="Link1" required>
+                        <input class="form-control mb-2 mb-sm-0 mr-sm-2" id="name" type="text" placeholder="Link1" required>
                         <label class="sr-only" for="url">URL (destination)</label>
-                        <input class="form-control mb-2 mr-sm-2" id="url" type="url" placeholder="https://example.com" required>
-                        <button class="btn btn-primary mb-2" type="submit">Add</button>
+                        <input class="form-control mb-2 mb-sm-0 mr-sm-2" id="url" type="url" placeholder="https://example.com" required>
+                        <button class="btn btn-primary" type="submit">Add</button>
                         <div id="status"></div>
                     </form>
                 </div>
@@ -91,7 +91,7 @@ if ($config_content["settings"]["custom_links"]) {
                 </div>
             </div>
             <div class="d-flex justify-content-center">
-                <div class="spinner-border text-primary" id="spinner" role="status">
+                <div class="spinner-border text-primary mt-4" id="spinner" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>

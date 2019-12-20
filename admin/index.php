@@ -70,15 +70,15 @@ if ($config_content["settings"]["custom_links"]) {
             <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?></h1>
             <h4 class="mb-4 text-center">admin panel</h4>
             <div class="row">
-                <div class="col-3">
-                    <div class="card mb-3">
+                <div class="col-md-4 col-lg-3">
+                    <div class="card d-none d-md-block mb-3">
                         <div class="card-body">
                             <a class="card-link" id="refresh" href="#refresh">Refresh charts</a>
                         </div>
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">Add shortlink</h5>
+                            <h5 class="card-title">Add shortlink <small class="d-md-none"><a class="card-link" id="refresh" href="#refresh">Refresh charts</a></small></h5>
                             <form id="add-form">
                                 <div class="form-group">
                                     <label for="name">Name</label>
@@ -101,13 +101,13 @@ if ($config_content["settings"]["custom_links"]) {
                             </form>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card d-none d-md-block">
                         <div class="card-body">
-                            <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.3.0</p>
+                            <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.4.0</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-9">
+                <div class="col-md-8 col-lg-9">
                     <div class="d-flex justify-content-center">
                         <div class="spinner-border text-primary mt-4" id="spinner" role="status">
                             <span class="sr-only">Loading...</span>
@@ -116,6 +116,7 @@ if ($config_content["settings"]["custom_links"]) {
                     <div id="charts"></div>
                 </div>
             </div>
+            <p class="text-center d-md-none mt-1 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.4.0</p>
         </div>
     </main>
 

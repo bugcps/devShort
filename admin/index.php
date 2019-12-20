@@ -69,34 +69,53 @@ if ($config_content["settings"]["custom_links"]) {
         <div class="container">
             <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?></h1>
             <h4 class="mb-4 text-center">admin panel</h4>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Add shortlink <small><a class="card-link" id="refresh" href="#refresh">Refresh charts</a></small></h5>
-                    <form class="form-inline" id="add-form">
-                        <label class="sr-only" for="name">Name</label>
-                        <input class="form-control mb-2 mb-sm-0 mr-sm-2" id="name" type="text" placeholder="Link1" required>
-                        <label class="sr-only" for="url">URL (destination)</label>
-                        <input class="form-control mb-2 mb-sm-0 mr-sm-2" id="url" type="url" placeholder="https://example.com" required>
-                        <button class="btn btn-primary" type="submit">Add</button>
-                        <div id="status"></div>
-                    </form>
+            <div class="row">
+                <div class="col-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <a class="card-link" id="refresh" href="#refresh">Refresh charts</a>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Add shortlink</h5>
+                            <form id="add-form">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input class="form-control mb-2 mb-sm-0 mr-sm-2" id="name" type="text" placeholder="Link1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="url">URL (destination)</label>
+                                    <input class="form-control mb-2 mb-sm-0 mr-sm-2" id="url" type="url" placeholder="https://example.com" required>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Add</button>
+                                <div id="status"></div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Search</h5>
+                            <form>
+                                <input class="form-control" id="search-bar" type="text">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.3.0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary mt-4" id="spinner" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="charts"></div>
                 </div>
             </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Search</h5>
-                    <form>
-                        <input class="form-control" id="search-bar" type="text">
-                    </form>
-                </div>
-            </div>
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-primary mt-4" id="spinner" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-            <div id="charts"></div>
-            <p class="text-center mt-4 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.3.0 (Latest: <a href="https://github.com/flokX/devShort/releases"><img src="https://img.shields.io/github/release/flokX/devShort.svg" alt="Latest release"></a>, <a href="https://github.com/flokX/devShort/wiki/Installation#update-or-reinstallation">How to update</a>)</p>
         </div>
     </main>
 

@@ -1,24 +1,26 @@
+/* Register variables */
 const currentDate = new Date();
 const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
 const spinner = document.getElementById('spinner');
 const chartsDiv = document.getElementById('charts');
 const statusDiv = document.getElementById('status');
 
+/* Helper function to post to page api */
 function post(url, data) {
     'use strict';
     return fetch(url, {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(function (response) {
-            return response.json();
-        });
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(function (response) {
+        return response.json();
+    });
 }
 
+/* Add a new shortlink */
 document.getElementById('add-form').addEventListener('submit', function (event) {
     'use strict';
     event.preventDefault();
@@ -43,6 +45,7 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
     spinner.style.display = 'none';
 });
 
+/* Provide search functionality */
 var searchBox = document.getElementById('search-bar');
 searchBox.addEventListener('input', function (event) {
     'use strict';
@@ -56,12 +59,14 @@ searchBox.addEventListener('input', function (event) {
     }
 });
 
+/* Reload charts */
 document.getElementById('refresh').addEventListener('click', function (event) {
     'use strict';
     event.preventDefault();
     getCharts();
 });
 
+/* Get charts and date (remove old when necessary) */
 function getCharts() {
     'use strict';
     spinner.style.display = 'block';

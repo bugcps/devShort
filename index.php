@@ -2,7 +2,7 @@
 
 // All relevant changes can be made in the data file. Please read the docs: https://github.com/flokX/devShort/wiki
 
-$base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "admin"));
+$base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data"));
 $config_content = json_decode(file_get_contents($base_path . DIRECTORY_SEPARATOR . "config.json"), true);
 
 // Counts the access
@@ -53,7 +53,7 @@ if ($config_content["settings"]["custom_links"]) {
                 <li class="list-inline-item">-</li>
                 <li class="list-inline-item"><a href="<?php echo $config_content["settings"]["home_link"]; ?>">Home page</a></li>
                 <li class="list-inline-item">-</li>
-                <li class="list-inline-item"><a href="admin">Admin panel</a></li>
+                <li class="list-inline-item"><a href="admin.php">Admin panel</a></li>
             </ul>
         </div>
     </main>

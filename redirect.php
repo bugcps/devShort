@@ -18,7 +18,7 @@ function count_access($base_path, $name) {
     file_put_contents($filename, json_encode($stats, JSON_PRETTY_PRINT));
 }
 
-$base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "admin"));
+$base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data"));
 $config_content = json_decode(file_get_contents($base_path . DIRECTORY_SEPARATOR . "config.json"), true);
 
 if (array_key_exists($short, $config_content["shortlinks"])) {

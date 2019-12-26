@@ -7,6 +7,13 @@ $config_content = json_decode(file_get_contents($config_path), true);
 $stats_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "stats.json"));
 $stats_content = json_decode(file_get_contents($stats_path), true);
 
+// Check if authentication is valid
+session_start();
+if (!isset($_SESSION["user_authenticated"])) {
+    header("Location: admin-auth.php?login");
+    exit;
+}
+
 // Filter the names that the admin interface doesn't break
 function filter_name($nameRaw) {
     $name = filter_var($nameRaw, FILTER_SANITIZE_STRING);
@@ -73,12 +80,14 @@ if ($config_content["settings"]["custom_links"]) {
                 <div class="col-md-4 col-lg-3">
                     <div class="card d-none d-md-block mb-3">
                         <div class="card-body">
+                            <h5 class="card-title">Tools</h5>
                             <a class="card-link" id="refresh" href="#refresh">Refresh charts</a>
+                            <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">Add shortlink <small class="d-md-none"><a class="card-link" id="refresh" href="#refresh">Refresh charts</a></small></h5>
+                            <h5 class="card-title">Add shortlink</h5>
                             <form id="add-form">
                                 <div class="form-group">
                                     <label for="name">Name</label>
@@ -104,6 +113,12 @@ if ($config_content["settings"]["custom_links"]) {
                     <div class="card d-none d-md-block">
                         <div class="card-body">
                             <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.4.0</p>
+                        </div>
+                    </div>
+                    <div class="card d-md-none mb-3">
+                        <div class="card-body text-center">
+                            <a class="card-link" id="refresh" href="#refresh">Refresh charts</a>
+                            <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
                 </div>

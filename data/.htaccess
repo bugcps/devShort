@@ -1,0 +1,10 @@
+# Lock the whole directory because the data should not be freely accessible
+# (aplication configuration data)
+
+<ifModule mod_authz_core.c>
+    Require all denied
+</ifModule>
+
+<ifModule mod_autoindex.c>
+    IndexIgnore *
+</ifModule>

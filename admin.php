@@ -14,6 +14,13 @@ if (!isset($_SESSION["user_authenticated"])) {
     exit;
 }
 
+// Deliver stats.json content for the program (make AJAX calls and charts reloading possible)
+if (isset($_GET["get_stats"])) {
+    header("Content-Type: application/json");
+    readfile($stats_path);
+    exit;
+}
+
 // Filter the names that the admin interface doesn't break
 function filter_name($nameRaw) {
     $name = filter_var($nameRaw, FILTER_SANITIZE_STRING);

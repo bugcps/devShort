@@ -75,10 +75,7 @@ function getCharts() {
     while (chartsDiv.firstChild) {
         chartsDiv.firstChild.remove();
     }
-    fetch('../data/stats.json', {
-        cache: 'no-cache',
-        credentials: 'same-origin'
-    }).then(function (response) {
+    fetch('admin.php?get_stats').then(function (response) {
         return response.json();
     }).then(function (json) {
         for (let [name, data] of Object.entries(json)) {

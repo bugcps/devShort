@@ -2,16 +2,16 @@
 
 // All relevant changes can be made in the data file. Please read the docs: https://github.com/flokX/devShort/wiki
 
-$base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data"));
-$config_content = json_decode(file_get_contents($base_path . DIRECTORY_SEPARATOR . "config.json"), true);
+$config_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "config.json"));
+$config_content = json_decode(file_get_contents($config_path), true);
+$stats_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "stats.json"));
+$stats_content = json_decode(file_get_contents($stats_path), true);
 
-// Counts the access
-$filename = $base_path . DIRECTORY_SEPARATOR . "stats.json";
-$stats = json_decode(file_get_contents($filename), true);
-$stats["Index"][mktime(0, 0, 0)] += 1;
-file_put_contents($filename, json_encode($stats, JSON_PRETTY_PRINT));
+// Count the access
+$stats_content["Index"][mktime(0, 0, 0)] += 1;
+file_put_contents($stats_path, json_encode($stats_content));
 
-// Generator for page customization
+// Generate custom buttons for the footer
 $links_string = "";
 if ($config_content["settings"]["custom_links"]) {
     foreach ($config_content["settings"]["custom_links"] as $name => $url) {
@@ -41,9 +41,9 @@ if ($config_content["settings"]["custom_links"]) {
     <main class="flex-shrink-0">
         <div class="container">
             <nav class="mt-3" aria-label="breadcrumb">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb shadow-sm">
                     <li class="breadcrumb-item"><a href="<?php echo $config_content["settings"]["home_link"]; ?>">Home</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><?php echo $config_content["settings"]["name"]; ?></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo $config_content["settings"]["name"]; ?></li>
                 </ol>
             </nav>
             <h1 class="mt-5"><?php echo $config_content["settings"]["name"]; ?></h1>

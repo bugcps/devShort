@@ -25,7 +25,7 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
     'use strict';
     event.preventDefault();
     spinner.style.display = '';
-    post('index.php?add', {
+    post('admin.php?add', {
         name: document.getElementById('name').value,
         url: document.getElementById('url').value
     }).then(function (data) {
@@ -59,12 +59,14 @@ searchBox.addEventListener('input', function (event) {
     }
 });
 
-/* Reload charts */
-document.getElementById('refresh').addEventListener('click', function (event) {
+/* Refresh charts */
+function refreshCharts(event) {
     'use strict';
     event.preventDefault();
     getCharts();
-});
+}
+document.getElementById('refresh-1').addEventListener('click', refreshCharts);
+document.getElementById('refresh-2').addEventListener('click', refreshCharts);
 
 /* Get charts and date (remove old when necessary) */
 function getCharts() {
@@ -106,7 +108,7 @@ function getCharts() {
             });
             document.getElementById('delete-' + name).addEventListener('click', function (event) {
                 event.preventDefault();
-                post('index.php?delete', {
+                post('admin.php?delete', {
                     name: name
                 }).then(function () {
                     document.getElementById('card-' + name).remove();

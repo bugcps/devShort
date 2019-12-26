@@ -10,16 +10,16 @@ if (in_array($short, $return_404)) {
     exit;
 }
 
-// Counts the access to the given $name
-function count_access($base_path, $name) {
-    $filename = $base_path . DIRECTORY_SEPARATOR . "stats.json";
-    $stats = json_decode(file_get_contents($filename), true);
-    $stats[$name][mktime(0, 0, 0)] += 1;
-    file_put_contents($filename, json_encode($stats, JSON_PRETTY_PRINT));
-}
+$config_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "config.json"));
+$config_content = json_decode(file_get_contents($config_path), true);
+$stats_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "stats.json"));
+$stats_content = json_decode(file_get_contents($stats_path), true);
 
-$base_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data"));
-$config_content = json_decode(file_get_contents($base_path . DIRECTORY_SEPARATOR . "config.json"), true);
+// Count the access to the given $name
+function count_access($base_path, $name) {
+    $stats_content[$name][mktime(0, 0, 0)] += 1;
+    file_put_contents($stats_path, json_encode($stats_content));
+}
 
 if (array_key_exists($short, $config_content["shortlinks"])) {
     header("Location: " . $config_content["shortlinks"][$short], $http_response_code=303);
@@ -32,7 +32,7 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
     header("HTTP/1.1 404 Not Found");
     count_access($base_path, "404-request");
 
-    // Generator for page customization
+    // Generate custom buttons for the footer
     $links_string = "";
     if ($config_content["settings"]["custom_links"]) {
         foreach ($config_content["settings"]["custom_links"] as $name => $url) {
@@ -63,7 +63,7 @@ if (array_key_exists($short, $config_content["shortlinks"])) {
     <main class="flex-shrink-0">
         <div class="container">
             <nav class="mt-3" aria-label="breadcrumb">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb shadow-sm">
                     <li class="breadcrumb-item"><a href="<?php echo $config_content["settings"]["home_link"]; ?>">Home</a></li>
                     <li class="breadcrumb-item"><?php echo $config_content["settings"]["name"]; ?></li>
                     <li class="breadcrumb-item active" aria-current="page">404</li>

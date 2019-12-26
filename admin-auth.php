@@ -34,7 +34,7 @@ if (isset($_GET["logout"])) {
 }
 
 // Login user in session if mode is login and post data is available
-if (isset($_GET["login"])) {
+if (isset($_GET["login"]) && isset($_POST["input_password"])) {
     if (password_verify($_POST["input_password"], $config_content["admin_password"])) {
         $_SESSION["user_authenticated"] = true;
         header("Location: admin.php");
@@ -44,7 +44,7 @@ if (isset($_GET["login"])) {
     }
 }
 
-// Generator for page customization
+// Generate custom buttons for the footer
 $links_string = "";
 if ($config_content["settings"]["custom_links"]) {
     foreach ($config_content["settings"]["custom_links"] as $name => $url) {
@@ -83,12 +83,12 @@ if ($config_content["settings"]["custom_links"]) {
             <h1 class="mt-5">Login</h1>
             <p class="lead">Please sign in to access the admin panel. If you need help, visit <a href="https://github.com/flokX/devShort/wiki">the devShort wiki</a>.</p>
             <form action="admin-auth.php?login" method="POST">
-                <div class="alert alert-danger" role="alert" <?php if (!$incorrect_password) { echo "style=\"display: none;\"" } ?>>
+                <div class="alert alert-danger" role="alert" <?php if (!$incorrect_password) { echo "style=\"display: none;\""; } ?>>
                     The given password was incorrect, please try again!
                 </div>
                 <div class="form-group">
                   <label for="inputPassword">Password</label>
-                  <input class="form-control" id="inputPassword" name="input_password" type="password">
+                  <input class="form-control" id="inputPassword" name="input_password" type="password" autofocus required>
                 </div>
                 <button class="btn btn-primary" type="submit">Login</button>
             </form>

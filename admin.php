@@ -39,13 +39,13 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         $stats_content[$filtered["name"]] = array();
     }
     file_put_contents($config_path, json_encode($config_content, JSON_PRETTY_PRINT));
-    file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
+    file_put_contents($stats_path, json_encode($stats_content));
     header("Content-Type: application/json");
     echo "{\"status\": \"successful\"}";
     exit;
 }
 
-// Generator for page customization
+// Generate custom buttons for the footer
 $links_string = "";
 if ($config_content["settings"]["custom_links"]) {
     foreach ($config_content["settings"]["custom_links"] as $name => $url) {
@@ -81,7 +81,7 @@ if ($config_content["settings"]["custom_links"]) {
                     <div class="card d-none d-md-block mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Tools</h5>
-                            <a class="card-link" id="refresh" href="#refresh">Refresh charts</a>
+                            <a class="card-link" id="refresh-1" href="#refresh">Refresh charts</a>
                             <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
@@ -112,12 +112,12 @@ if ($config_content["settings"]["custom_links"]) {
                     </div>
                     <div class="card d-none d-md-block">
                         <div class="card-body">
-                            <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.4.0</p>
+                            <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v3.0.0</p>
                         </div>
                     </div>
                     <div class="card d-md-none mb-3">
                         <div class="card-body text-center">
-                            <a class="card-link" id="refresh" href="#refresh">Refresh charts</a>
+                            <a class="card-link" id="refresh-2" href="#refresh">Refresh charts</a>
                             <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
@@ -131,7 +131,7 @@ if ($config_content["settings"]["custom_links"]) {
                     <div id="charts"></div>
                 </div>
             </div>
-            <p class="text-center d-md-none mt-1 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v2.4.0</p>
+            <p class="text-center d-md-none mt-1 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v3.0.0</p>
         </div>
     </main>
 

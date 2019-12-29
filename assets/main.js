@@ -4,6 +4,7 @@ const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1)
 const spinner = document.getElementById('spinner');
 const chartsDiv = document.getElementById('charts');
 const statusDiv = document.getElementById('status');
+const version = "v3.0.0";
 
 /* Helper function to post to page api */
 function post(url, data) {
@@ -67,6 +68,18 @@ function refreshCharts(event) {
 }
 document.getElementById('refresh-1').addEventListener('click', refreshCharts);
 document.getElementById('refresh-2').addEventListener('click', refreshCharts);
+
+/* Check for updates */
+fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then(function (response) {
+    return response.json();
+}).then(function (json) {
+    let inner = ' ' + version;
+    if (json['latest'] !== version) {
+        inner += ' <span class="text-warning">(<a class="text-warning" href="https://github.com/flokX/devShort/releases/latest">update available</a>!)</span>';
+    }
+    document.getElementById('version-1').insertAdjacentHTML('beforeend', inner);
+    document.getElementById('version-2').insertAdjacentHTML('beforeend', inner);
+});
 
 /* Get charts and date (remove old when necessary) */
 function getCharts() {

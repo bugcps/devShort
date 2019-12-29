@@ -117,9 +117,9 @@ if ($config_content["settings"]["custom_links"]) {
                             </form>
                         </div>
                     </div>
-                    <div class="card d-none d-md-block">
+                    <div class="card d-none d-md-block mb-3">
                         <div class="card-body">
-                            <p class="mb-0">powered by <a href="https://github.com/flokX/devShort">devShort</a> v3.0.0</p>
+                            <p class="mb-0" id="version-1">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>
                         </div>
                     </div>
                     <div class="card d-md-none mb-3">
@@ -131,14 +131,14 @@ if ($config_content["settings"]["custom_links"]) {
                 </div>
                 <div class="col-md-8 col-lg-9">
                     <div class="d-flex justify-content-center">
-                        <div class="spinner-border text-primary mt-4" id="spinner" role="status">
+                        <div class="spinner-border text-primary my-4" id="spinner" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
                     <div id="charts"></div>
                 </div>
             </div>
-            <p class="text-center d-md-none mt-1 mb-5">powered by <a href="https://github.com/flokX/devShort">devShort</a> v3.0.0</p>
+            <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>
         </div>
     </main>
 

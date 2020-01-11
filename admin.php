@@ -83,12 +83,12 @@ if ($config_content["settings"]["custom_links"]) {
         <div class="container">
             <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?></h1>
             <h4 class="mb-4 text-center">admin panel</h4>
-            <div class="row">
+            <div class="row" id="app">
                 <div class="col-md-4 col-lg-3">
                     <div class="card d-none d-md-block mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Tools</h5>
-                            <a class="card-link" id="refresh-1" href="#refresh">Refresh charts</a>
+                            <a class="card-link" href="#reload" v-on:click="loadData">Reload charts</a>
                             <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
@@ -124,18 +124,18 @@ if ($config_content["settings"]["custom_links"]) {
                     </div>
                     <div class="card d-md-none mb-3">
                         <div class="card-body text-center">
-                            <a class="card-link" id="refresh-2" href="#refresh">Refresh charts</a>
+                            <a class="card-link" href="#reload" v-on:click="loadData">Reload charts</a>
                             <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8 col-lg-9">
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border text-primary my-4" id="spinner" role="status">
+                    <div class="d-flex justify-content-center" v-if="!loaded">
+                        <div class="spinner-border text-primary my-4" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <div id="charts"></div>
+                    <chart v-if="loaded" v-for="(stats, name) in shortlinks" v-bind:key="name" v-bind:name="name" v-bind:stats="stats"></chart>
                 </div>
             </div>
             <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>
@@ -151,7 +151,35 @@ if ($config_content["settings"]["custom_links"]) {
         </div>
     </footer>
 
-    <script src="assets/vendor/frappe-charts/frappe-charts.min.iife.js"></script>
+    <template id="chart-template">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <h3 class="card-title mb-0">{{ name }}</h3>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <span>ToDo</span>
+                    </div>
+                </div>
+                <hr>
+                <canvas :id="chartId" role="img" :aria-label="chartAriaLabel"></canvas>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <span>ToDo</span>
+                    </div>
+                    <div class="col-lg-3 mt-2 mt-lg-0 text-center">
+                        <button type="button" class="btn btn-outline-danger" v-on:click="remove">Delete shortlink</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="assets/vendor/vue/vue.min.js"></script> -->
+    <script src="assets/vendor/chart.js/Chart.bundle.min.js"></script>
     <script src="assets/main.js"></script>
 
 </body>

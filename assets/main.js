@@ -1,6 +1,5 @@
 /* Register variables */
 const currentDate = new Date();
-const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
 const spinner = document.getElementById('spinner');
 const chartsDiv = document.getElementById('charts');
 const statusDiv = document.getElementById('status');
@@ -11,7 +10,6 @@ function post(url, data) {
     'use strict';
     return fetch(url, {
         method: 'POST',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -21,29 +19,115 @@ function post(url, data) {
     });
 }
 
-/* Add a new shortlink */
-document.getElementById('add-form').addEventListener('submit', function (event) {
-    'use strict';
-    event.preventDefault();
-    spinner.style.display = '';
-    post('admin.php?add', {
-        name: document.getElementById('name').value,
-        url: document.getElementById('url').value
-    }).then(function (data) {
-        if (data.status === 'successful') {
-            document.getElementById('name').value = '';
-            document.getElementById('url').value = 'https://';
-            if (statusDiv.firstChild) {
-                statusDiv.firstChild.remove();
-            }
-            getCharts();
-        } else if (data.status === 'unvalid-url') {
-            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
-        } else {
-            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
+// Vue chart component
+Vue.component('chart', {
+    props: ['name', 'stats'],
+    data: function () {
+        return {
+            identifier: Math.floor(Math.random() * 10000),
+            chart: null
         }
-    });
-    spinner.style.display = 'none';
+    },
+    template: document.getElementById('chart-template'),
+    mounted: function () {
+        let ctx = document.getElementById(this.chartId);
+        let dataset = [];
+        for (let [unixTimestamp, count] of Object.entries(this.stats)) {
+            let timestamp = new Date(unixTimestamp * 1000);
+            dataset.push({ x: timestamp, y: count });
+        }
+        this.chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Access count',
+                    data: dataset,
+                    backgroundColor: 'rgba(0, 123, 255, 0.4)',
+                    borderColor: '#007bff',
+                    hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)'
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Accesses to ' + this.name
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        distribution: 'linear',
+                        ticks: {
+                            min: currentDate.getTime() - (60 * 60 * 24 * 14 * 1000),
+                            max: currentDate
+                        },
+                        time: {
+                            tooltipFormat: 'YYYY-MM-DD',
+                            unit: 'day'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }]
+                }
+            }
+        });
+    },
+    beforeDestroy: function () {
+        this.chart.destroy();
+    },
+    methods: {
+        remove: function (event) {
+            post('admin.php?delete', {
+                name: this.name
+            }).then(function (response) {
+                vm.loadData();
+            });
+        }
+    },
+    computed: {
+        chartId: function () {
+            return 'chart-' + this.identifier;
+        },
+        chartAriaLabel: function () {
+            return 'Access statistics for ' + this.name;
+        }
+    }
+});
+
+// Vue app instance
+var vm = new Vue({
+    el: '#app',
+    data: {
+        shortlinks: [],
+        loaded: false
+    },
+    methods: {
+        loadData: function (event) {
+            if (event) {
+                // When calling this function via a card-link
+                event.preventDefault();
+            }
+            this.loaded = false;
+            var vm = this;
+            fetch('admin.php?get_stats')
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    vm.shortlinks = data
+                });
+            this.loaded = true;
+        }
+    },
+    created: function () {
+        this.loadData();
+    }
 });
 
 /* Provide search functionality */
@@ -60,14 +144,25 @@ searchBox.addEventListener('input', function (event) {
     }
 });
 
-/* Refresh charts */
-function refreshCharts(event) {
+/* Add a new shortlink */
+document.getElementById('add-form').addEventListener('submit', function (event) {
     'use strict';
     event.preventDefault();
-    getCharts();
-}
-document.getElementById('refresh-1').addEventListener('click', refreshCharts);
-document.getElementById('refresh-2').addEventListener('click', refreshCharts);
+    post('admin.php?add', {
+        name: document.getElementById('name').value,
+        url: document.getElementById('url').value
+    }).then(function (data) {
+        if (data.status === 'successful') {
+            document.getElementById('name').value = '';
+            document.getElementById('url').value = 'https://';
+            vm.loadData();
+        } else if (data.status === 'unvalid-url') {
+            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
+        } else {
+            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
+        }
+    });
+});
 
 /* Check for updates */
 fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then(function (response) {
@@ -80,53 +175,3 @@ fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then
     document.getElementById('version-1').insertAdjacentHTML('beforeend', inner);
     document.getElementById('version-2').insertAdjacentHTML('beforeend', inner);
 });
-
-/* Get charts and date (remove old when necessary) */
-function getCharts() {
-    'use strict';
-    spinner.style.display = 'block';
-    while (chartsDiv.firstChild) {
-        chartsDiv.firstChild.remove();
-    }
-    fetch('admin.php?get_stats').then(function (response) {
-        return response.json();
-    }).then(function (json) {
-        for (let [name, data] of Object.entries(json)) {
-            chartsDiv.insertAdjacentHTML('beforeend', `<div id="card-${name}" class="card text-center mb-3">
-    <div class="card-header">${name}</div>
-    <div class="card-body p-2">
-        <div id="heatmap-${name}" class="overflow-auto"></div>
-    </div>
-    <div class="card-footer text-muted">
-        <a id="export-${name}" href="#export" class="card-link">Export chart</a><a id="delete-${name}" href="#delete" class="card-link">Delete shortlink and dataset</a>
-    </div>
-</div>`);
-            let heatmap = new frappe.Chart('div#heatmap-' + name, {
-                type: 'heatmap',
-                title: 'Access statistics for ' + name,
-                data: {
-                    dataPoints: data,
-                    start: startDate,
-                    end: currentDate
-                },
-                countLabel: 'Access(es)',
-                discreteDomains: 0
-            });
-            document.getElementById('export-' + name).addEventListener('click', function (event) {
-                event.preventDefault();
-                heatmap.export();
-            });
-            document.getElementById('delete-' + name).addEventListener('click', function (event) {
-                event.preventDefault();
-                post('admin.php?delete', {
-                    name: name
-                }).then(function () {
-                    document.getElementById('card-' + name).remove();
-                });
-            });
-        }
-        spinner.style.display = 'none';
-    });
-}
-
-getCharts();

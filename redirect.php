@@ -16,21 +16,23 @@ $stats_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "stats.json"))
 $stats_content = json_decode(file_get_contents($stats_path), true);
 
 // Count the access to the given $name
-function count_access($base_path, $name) {
+function count_access($name) {
+    global $stats_path, $stats_content;
+    
     $stats_content[$name][mktime(0, 0, 0)] += 1;
     file_put_contents($stats_path, json_encode($stats_content));
 }
 
 if (array_key_exists($short, $config_content["shortlinks"])) {
     header("Location: " . $config_content["shortlinks"][$short], $http_response_code=303);
-    count_access($base_path, $short);
+    count_access($short);
     exit;
 } else if ($short === "") {
     header("Location: index.php", $http_response_code=301);
     exit;
 } else {
     header("HTTP/1.1 404 Not Found");
-    count_access($base_path, "404-request");
+    count_access("404-request");
 
     // Generate custom buttons for the footer
     $links_string = "";

@@ -164,6 +164,10 @@ if ($config_content["settings"]["custom_links"]) {
                 </div>
                 <hr>
                 <canvas :id="chartId" role="img" :aria-label="chartAriaLabel"></canvas>
+                <div class="text-center">
+                    <a class="badge badge-secondary" v-on:click="viewOne" href="#14days">Show last 14 days</a>
+                    <a class="badge badge-secondary" v-on:click="viewTwo" href="#month">Show last month</a>
+                </div>
                 <hr>
                 <div class="row">
                     <div class="col-lg-9">
@@ -180,6 +184,8 @@ if ($config_content["settings"]["custom_links"]) {
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- <script src="assets/vendor/vue/vue.min.js"></script> -->
     <script src="assets/vendor/chart.js/Chart.bundle.min.js"></script>
+    <script src="assets/vendor/hammer.js/hammer.min.js"></script>
+    <script src="assets/vendor/chart.js/chartjs-plugin-zoom.min.js"></script>
     <script src="assets/main.js"></script>
 
 </body>

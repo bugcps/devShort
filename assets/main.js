@@ -74,6 +74,24 @@ Vue.component('chart', {
                             precision: 0
                         }
                     }]
+                },
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                            rangeMax: {
+                                x: currentDate
+                            }
+                        },
+                        zoom: {
+                            enabled: true,
+                            mode: 'x',
+                            rangeMax: {
+                                x: currentDate
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -88,6 +106,20 @@ Vue.component('chart', {
             }).then(function (response) {
                 vm.loadData();
             });
+        },
+        setView: function (event, range) {
+            event.preventDefault();
+            this.chart.options.scales.xAxes[0].ticks = {
+                min: currentDate.getTime() - (60 * 60 * 24 * range * 1000),
+                max: currentDate
+            };
+            this.chart.update();
+        },
+        viewOne: function (event) {
+            this.setView(event, 14);
+        },
+        viewTwo: function (event) {
+            this.setView(event, 31);
         }
     },
     computed: {

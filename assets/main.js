@@ -25,7 +25,8 @@ Vue.component('chart', {
     data: function () {
         return {
             identifier: Math.floor(Math.random() * 10000),
-            chart: null
+            chart: null,
+            accessCount: { sevenDays: 0, total: 0 }
         }
     },
     template: document.getElementById('chart-template'),
@@ -34,8 +35,12 @@ Vue.component('chart', {
         let dataset = [];
         for (let [unixTimestamp, count] of Object.entries(this.stats)) {
             let timestamp = new Date(unixTimestamp * 1000);
+            if (((currentDate - timestamp) / (60 * 60 * 24 * 1000)) <= 7) {
+                this.accessCount.sevenDays += count;
+            }
             dataset.push({ x: timestamp, y: count });
         }
+        this.accessCount.total = dataset.length;
         this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -126,8 +131,8 @@ Vue.component('chart', {
         chartId: function () {
             return 'chart-' + this.identifier;
         },
-        chartAriaLabel: function () {
-            return 'Access statistics for ' + this.name;
+        shortlinkUrl: function () {
+            return this.$parent.dataObject.shortlinks[this.name];
         }
     }
 });
@@ -136,7 +141,7 @@ Vue.component('chart', {
 var vm = new Vue({
     el: '#app',
     data: {
-        shortlinks: [],
+        dataObject: [],
         loaded: false
     },
     methods: {
@@ -147,12 +152,12 @@ var vm = new Vue({
             }
             this.loaded = false;
             var vm = this;
-            fetch('admin.php?get_stats')
+            fetch('admin.php?get_data')
                 .then(function (response) {
                     return response.json()
                 })
                 .then(function (data) {
-                    vm.shortlinks = data
+                    vm.dataObject = data
                 });
             this.loaded = true;
         }

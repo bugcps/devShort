@@ -15,9 +15,10 @@ if (!isset($_SESSION["user_authenticated"])) {
 }
 
 // Deliver stats.json content for the program (make AJAX calls and charts reloading possible)
-if (isset($_GET["get_stats"])) {
+if (isset($_GET["get_data"])) {
     header("Content-Type: application/json");
-    readfile($stats_path);
+    $content = array("shortlinks" => $config_content["shortlinks"], "stats" => $stats_content);
+    echo json_encode($content);
     exit;
 }
 
@@ -135,7 +136,7 @@ if ($config_content["settings"]["custom_links"]) {
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <chart v-if="loaded" v-for="(stats, name) in shortlinks" v-bind:key="name" v-bind:name="name" v-bind:stats="stats"></chart>
+                    <chart v-if="loaded" v-for="(stats, name) in dataObject.stats" v-bind:key="name" v-bind:name="name" v-bind:stats="stats"></chart>
                 </div>
             </div>
             <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>
@@ -159,19 +160,29 @@ if ($config_content["settings"]["custom_links"]) {
                         <h3 class="card-title mb-0">{{ name }}</h3>
                     </div>
                     <div class="col-lg-6 d-flex align-items-center">
-                        <span>ToDo</span>
+                        <span>{{ accessCount.sevenDays }} <small class="text-muted">Accesses last 7 days</small> | {{ accessCount.total }} <small class="text-muted">Accesses in total</small></span>
                     </div>
                 </div>
                 <hr>
-                <canvas :id="chartId" role="img" :aria-label="chartAriaLabel"></canvas>
+                <canvas :id="chartId" role="img" :aria-label="'Access statistics for ' + this.name"></canvas>
                 <div class="text-center">
                     <a class="badge badge-secondary" v-on:click="viewOne" href="#14days">Show last 14 days</a>
                     <a class="badge badge-secondary" v-on:click="viewTwo" href="#month">Show last month</a>
                 </div>
                 <hr>
-                <div class="row">
+                <p class="text-center text-muted mb-0" v-if="this.name === 'Index'">Index is an internal entry. It counts the number of front page accesses.</p>
+                <p class="text-center text-muted mb-0" v-else-if="this.name === '404-redirect'">404-redirect is an internal entry. It counts the number of 404 errors .</p>
+                <div class="row" v-else>
                     <div class="col-lg-9">
-                        <span>ToDo</span>
+                        <label class="sr-only" :for="'destination-' + this.identifier">URL (destination)</label>
+                        <div class="input-group">
+                            <input class="form-control" :id="'destination-' + this.identifier" type="url" :value="shortlinkUrl" readonly>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <a :href="shortlinkUrl" target="_blank" rel="noopener">open</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-3 mt-2 mt-lg-0 text-center">
                         <button type="button" class="btn btn-outline-danger" v-on:click="remove">Delete shortlink</button>

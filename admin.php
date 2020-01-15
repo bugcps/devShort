@@ -128,7 +128,7 @@ if ($config_content["settings"]["custom_links"]) {
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <chart v-for="(stats, name) in dataObject.stats" v-bind:key="name" :style="displayStyle(name, shortlinkUrl)" v-bind:name="name" v-bind:stats="stats" v-else></chart>
+                    <chart v-for="(stats, name) in dataObject.stats" v-bind:key="name" :style="displayStyle(name)" v-bind:name="name" v-bind:stats="stats" v-else></chart>
                 </div>
             </div>
             <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>

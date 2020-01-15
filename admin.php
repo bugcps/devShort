@@ -22,14 +22,6 @@ if (isset($_GET["get_data"])) {
     exit;
 }
 
-// Filter the names that the admin interface doesn't break
-function filter_name($nameRaw) {
-    $name = filter_var($nameRaw, FILTER_SANITIZE_STRING);
-    $name = str_replace(" ", "-", $name);
-    $name = preg_replace("/[^A-Za-z0-9-_]/", "", $name);
-    return $name;
-}
-
 // API functions to delete and add the shortlinks via the admin panel
 if (isset($_GET["delete"]) || isset($_GET["add"])) {
     $data = json_decode(file_get_contents("php://input"), true);
@@ -37,7 +29,7 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         unset($config_content["shortlinks"][$data["name"]]);
         unset($stats_content[$data["name"]]);
     } else if (isset($_GET["add"])) {
-        $filtered = array("name" => filter_name($data["name"]),
+        $filtered = array("name" => filter_var($data["name"], FILTER_SANITIZE_STRING),
                           "url" => filter_var($data["url"], FILTER_SANITIZE_URL));
         if (!filter_var($filtered["url"], FILTER_VALIDATE_URL)) {
             echo "{\"status\": \"unvalid-url\"}";
@@ -136,7 +128,7 @@ if ($config_content["settings"]["custom_links"]) {
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <chart v-for="(stats, name) in dataObject.stats" v-bind:key="name" :style="displayStyle(name)" v-bind:name="name" v-bind:stats="stats" v-else></chart>
+                    <chart v-for="(stats, name) in dataObject.stats" v-bind:key="name" :style="displayStyle(name, shortlinkUrl)" v-bind:name="name" v-bind:stats="stats" v-else></chart>
                 </div>
             </div>
             <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>
@@ -171,7 +163,7 @@ if ($config_content["settings"]["custom_links"]) {
                 </div>
                 <hr>
                 <p class="text-center text-muted mb-0" v-if="this.name === 'Index'">Index is an internal entry. It counts the number of front page accesses.</p>
-                <p class="text-center text-muted mb-0" v-else-if="this.name === '404-redirect'">404-redirect is an internal entry. It counts the number of 404 errors .</p>
+                <p class="text-center text-muted mb-0" v-else-if="this.name === '404-request'">404-request is an internal entry. It counts the number of accesses to non-existent shortlinks.</p>
                 <div class="row" v-else>
                     <div class="col-lg-9">
                         <label class="sr-only" :for="'destination-' + this.identifier">URL (destination)</label>
@@ -192,8 +184,7 @@ if ($config_content["settings"]["custom_links"]) {
         </div>
     </template>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!-- <script src="assets/vendor/vue/vue.min.js"></script> -->
+    <script src="assets/vendor/vue/vue.min.js"></script>
     <script src="assets/vendor/chart.js/Chart.bundle.min.js"></script>
     <script src="assets/vendor/hammer.js/hammer.min.js"></script>
     <script src="assets/vendor/chart.js/chartjs-plugin-zoom.min.js"></script>

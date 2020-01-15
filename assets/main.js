@@ -1,11 +1,70 @@
-/* Register variables */
+// Register variables
 const currentDate = new Date();
 const spinner = document.getElementById('spinner');
-const chartsDiv = document.getElementById('charts');
 const statusDiv = document.getElementById('status');
+const template = document.getElementById('chart-template');
 const version = "v3.0.0";
+var chartOptions = {
+    type: 'bar',
+    data: {
+        datasets: [{
+            label: 'Access count',
+            data: [],
+            backgroundColor: 'rgba(0, 123, 255, 0.4)',
+            borderColor: '#007bff',
+            hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)'
+        }]
+    },
+    options: {
+        legend: {
+            display: false
+        },
+        title: {
+            display: true,
+            text: 'Accesses to '
+        },
+        scales: {
+            xAxes: [{
+                type: 'time',
+                distribution: 'linear',
+                ticks: {
+                    min: currentDate.getTime() - (60 * 60 * 24 * 14 * 1000),
+                    max: currentDate
+                },
+                time: {
+                    tooltipFormat: 'YYYY-MM-DD',
+                    unit: 'day'
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }]
+        },
+        plugins: {
+            zoom: {
+                pan: {
+                    enabled: true,
+                    mode: 'x',
+                    rangeMax: {
+                        x: currentDate
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    mode: 'x',
+                    rangeMax: {
+                        x: currentDate
+                    }
+                }
+            }
+        }
+    }
+};
 
-/* Helper function to post to page api */
+// Helper function to post to page api
 function post(url, data) {
     'use strict';
     return fetch(url, {
@@ -29,7 +88,7 @@ Vue.component('chart', {
             accessCount: { sevenDays: 0, total: 0 }
         }
     },
-    template: document.getElementById('chart-template'),
+    template: template,
     mounted: function () {
         let ctx = document.getElementById(this.chartId);
         let dataset = [];
@@ -41,65 +100,9 @@ Vue.component('chart', {
             dataset.push({ x: timestamp, y: count });
         }
         this.accessCount.total = dataset.length;
-        this.chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                datasets: [{
-                    label: 'Access count',
-                    data: dataset,
-                    backgroundColor: 'rgba(0, 123, 255, 0.4)',
-                    borderColor: '#007bff',
-                    hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)'
-                }]
-            },
-            options: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Accesses to ' + this.name
-                },
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        distribution: 'linear',
-                        ticks: {
-                            min: currentDate.getTime() - (60 * 60 * 24 * 14 * 1000),
-                            max: currentDate
-                        },
-                        time: {
-                            tooltipFormat: 'YYYY-MM-DD',
-                            unit: 'day'
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            precision: 0
-                        }
-                    }]
-                },
-                plugins: {
-                    zoom: {
-                        pan: {
-                            enabled: true,
-                            mode: 'x',
-                            rangeMax: {
-                                x: currentDate
-                            }
-                        },
-                        zoom: {
-                            enabled: true,
-                            mode: 'x',
-                            rangeMax: {
-                                x: currentDate
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        this.chart = new Chart(ctx, chartOptions);
+        this.chart.data.datasets[0].data = dataset;
+        this.chart.options.title.text = 'Accesses to ' + this.name;
     },
     beforeDestroy: function () {
         this.chart.destroy();
@@ -175,7 +178,7 @@ var vm = new Vue({
     }
 });
 
-/* Add a new shortlink */
+// Add a new shortlink
 document.getElementById('add-form').addEventListener('submit', function (event) {
     'use strict';
     event.preventDefault();
@@ -195,7 +198,7 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
     });
 });
 
-/* Check for updates */
+// Check for updates
 fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then(function (response) {
     return response.json();
 }).then(function (json) {

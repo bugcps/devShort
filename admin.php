@@ -114,7 +114,7 @@ if ($config_content["settings"]["custom_links"]) {
                         <div class="card-body">
                             <h5 class="card-title">Search</h5>
                             <form>
-                                <input class="form-control" id="search-bar" type="text">
+                                <input class="form-control" type="text" v-model="search">
                             </form>
                         </div>
                     </div>
@@ -136,7 +136,7 @@ if ($config_content["settings"]["custom_links"]) {
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <chart v-if="loaded" v-for="(stats, name) in dataObject.stats" v-bind:key="name" v-bind:name="name" v-bind:stats="stats"></chart>
+                    <chart v-for="(stats, name) in dataObject.stats" v-bind:key="name" :style="displayStyle(name)" v-bind:name="name" v-bind:stats="stats" v-else></chart>
                 </div>
             </div>
             <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>

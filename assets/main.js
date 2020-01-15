@@ -142,7 +142,8 @@ var vm = new Vue({
     el: '#app',
     data: {
         dataObject: [],
-        loaded: false
+        loaded: false,
+        search: ''
     },
     methods: {
         loadData: function (event) {
@@ -160,24 +161,17 @@ var vm = new Vue({
                     vm.dataObject = data
                 });
             this.loaded = true;
+        },
+        displayStyle: function (name) {
+            if (!name.toLowerCase().includes(this.search.toLowerCase())) {
+                return 'display: none;'
+            } else {
+                return 'display: block;'
+            }
         }
     },
     created: function () {
         this.loadData();
-    }
-});
-
-/* Provide search functionality */
-var searchBox = document.getElementById('search-bar');
-searchBox.addEventListener('input', function (event) {
-    'use strict';
-    for (let node of chartsDiv.childNodes) {
-        let linkName = node.firstElementChild.innerHTML.toLowerCase();
-        if (linkName.includes(searchBox.value.toLowerCase())) {
-            node.style.display = 'block';
-        } else {
-            node.style.display = 'none';
-        }
     }
 });
 

@@ -97,9 +97,9 @@ Vue.component('chart', {
             if (((currentDate - timestamp) / (60 * 60 * 24 * 1000)) <= 7) {
                 this.accessCount.sevenDays += count;
             }
+            this.accessCount.total += count;
             dataset.push({ x: timestamp, y: count });
         }
-        this.accessCount.total = dataset.length;
         this.chart = new Chart(ctx, chartOptions);
         this.chart.data.datasets[0].data = dataset;
         this.chart.options.title.text = 'Accesses to ' + this.name;

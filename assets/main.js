@@ -1,5 +1,6 @@
 // Register variables
 const currentDate = new Date();
+const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
 const spinner = document.getElementById('spinner');
 const statusDiv = document.getElementById('status');
 const template = document.getElementById('chart-template');
@@ -25,13 +26,11 @@ Vue.component('chart', {
     data: function () {
         return {
             identifier: Math.floor(Math.random() * 10000),
-            chart: null,
             accessCount: { sevenDays: 0, total: 0 }
         }
     },
     template: template,
     mounted: function () {
-        let ctx = document.getElementById(this.chartId);
         let dataset = [];
         for (let [unixTimestamp, count] of Object.entries(this.stats)) {
             let timestamp = new Date(unixTimestamp * 1000);
@@ -41,68 +40,17 @@ Vue.component('chart', {
             this.accessCount.total += count;
             dataset.push({ x: timestamp, y: count });
         }
-        this.chart = new Chart(ctx, {
-            type: 'bar',
+        new frappe.Chart('div#' + this.chartId, {
+            type: 'heatmap',
+            title: 'Access statistics for ' + this.name,
             data: {
-                datasets: [{
-                    label: 'Access count',
-                    data: dataset,
-                    backgroundColor: 'rgba(0, 123, 255, 0.4)',
-                    borderColor: '#007bff',
-                    hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)'
-                }]
+                dataPoints: this.stats,
+                start: startDate,
+                end: currentDate
             },
-            options: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Accesses to ' + this.name
-                },
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        distribution: 'linear',
-                        ticks: {
-                            min: currentDate.getTime() - (60 * 60 * 24 * 14 * 1000),
-                            max: currentDate
-                        },
-                        time: {
-                            tooltipFormat: 'YYYY-MM-DD',
-                            unit: 'day'
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            precision: 0
-                        }
-                    }]
-                },
-                plugins: {
-                    zoom: {
-                        pan: {
-                            enabled: true,
-                            mode: 'x',
-                            rangeMax: {
-                                x: currentDate
-                            }
-                        },
-                        zoom: {
-                            enabled: true,
-                            mode: 'x',
-                            rangeMax: {
-                                x: currentDate
-                            }
-                        }
-                    }
-                }
-            }
+            countLabel: 'Accesses',
+            discreteDomains: 0
         });
-    },
-    beforeDestroy: function () {
-        this.chart.destroy();
     },
     methods: {
         remove: function (event) {
@@ -111,25 +59,11 @@ Vue.component('chart', {
             }).then(function (response) {
                 vm.loadData();
             });
-        },
-        setView: function (event, range) {
-            event.preventDefault();
-            this.chart.options.scales.xAxes[0].ticks = {
-                min: currentDate.getTime() - (60 * 60 * 24 * range * 1000),
-                max: currentDate
-            };
-            this.chart.update();
-        },
-        viewOne: function (event) {
-            this.setView(event, 14);
-        },
-        viewTwo: function (event) {
-            this.setView(event, 31);
         }
     },
     computed: {
         chartId: function () {
-            return 'chart-' + this.identifier;
+            return 'heatmap-' + this.identifier;
         },
         shortlinkUrl: function () {
             return this.$parent.dataObject.shortlinks[this.name];

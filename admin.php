@@ -156,11 +156,7 @@ if ($config_content["settings"]["custom_links"]) {
                     </div>
                 </div>
                 <hr>
-                <canvas :id="chartId" role="img" :aria-label="'Access statistics for ' + this.name"></canvas>
-                <div class="text-center">
-                    <a class="badge badge-secondary" v-on:click="viewOne" href="#14days">Show last 14 days</a>
-                    <a class="badge badge-secondary" v-on:click="viewTwo" href="#month">Show last month</a>
-                </div>
+                <div class="overflow-auto" :id="chartId"></div>
                 <hr>
                 <p class="text-center text-muted mb-0" v-if="this.name === 'Index'">Index is an internal entry. It counts the number of front page accesses.</p>
                 <p class="text-center text-muted mb-0" v-else-if="this.name === '404-request'">404-request is an internal entry. It counts the number of accesses to non-existent shortlinks.</p>
@@ -184,10 +180,8 @@ if ($config_content["settings"]["custom_links"]) {
         </div>
     </template>
 
+    <script src="assets/vendor/frappe-charts/frappe-charts.min.iife.js"></script>
     <script src="assets/vendor/vue/vue.min.js"></script>
-    <script src="assets/vendor/chart.js/Chart.bundle.min.js"></script>
-    <script src="assets/vendor/hammer.js/hammer.min.js"></script>
-    <script src="assets/vendor/chart.js/chartjs-plugin-zoom.min.js"></script>
     <script src="assets/main.js"></script>
 
 </body>

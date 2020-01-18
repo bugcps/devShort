@@ -4,65 +4,6 @@ const spinner = document.getElementById('spinner');
 const statusDiv = document.getElementById('status');
 const template = document.getElementById('chart-template');
 const version = "v3.0.0";
-var chartOptions = {
-    type: 'bar',
-    data: {
-        datasets: [{
-            label: 'Access count',
-            data: [],
-            backgroundColor: 'rgba(0, 123, 255, 0.4)',
-            borderColor: '#007bff',
-            hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)'
-        }]
-    },
-    options: {
-        legend: {
-            display: false
-        },
-        title: {
-            display: true,
-            text: 'Accesses to '
-        },
-        scales: {
-            xAxes: [{
-                type: 'time',
-                distribution: 'linear',
-                ticks: {
-                    min: currentDate.getTime() - (60 * 60 * 24 * 14 * 1000),
-                    max: currentDate
-                },
-                time: {
-                    tooltipFormat: 'YYYY-MM-DD',
-                    unit: 'day'
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    precision: 0
-                }
-            }]
-        },
-        plugins: {
-            zoom: {
-                pan: {
-                    enabled: true,
-                    mode: 'x',
-                    rangeMax: {
-                        x: currentDate
-                    }
-                },
-                zoom: {
-                    enabled: true,
-                    mode: 'x',
-                    rangeMax: {
-                        x: currentDate
-                    }
-                }
-            }
-        }
-    }
-};
 
 // Helper function to post to page api
 function post(url, data) {
@@ -100,9 +41,65 @@ Vue.component('chart', {
             this.accessCount.total += count;
             dataset.push({ x: timestamp, y: count });
         }
-        this.chart = new Chart(ctx, chartOptions);
-        this.chart.data.datasets[0].data = dataset;
-        this.chart.options.title.text = 'Accesses to ' + this.name;
+        this.chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Access count',
+                    data: dataset,
+                    backgroundColor: 'rgba(0, 123, 255, 0.4)',
+                    borderColor: '#007bff',
+                    hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)'
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Accesses to ' + this.name
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        distribution: 'linear',
+                        ticks: {
+                            min: currentDate.getTime() - (60 * 60 * 24 * 14 * 1000),
+                            max: currentDate
+                        },
+                        time: {
+                            tooltipFormat: 'YYYY-MM-DD',
+                            unit: 'day'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }]
+                },
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                            rangeMax: {
+                                x: currentDate
+                            }
+                        },
+                        zoom: {
+                            enabled: true,
+                            mode: 'x',
+                            rangeMax: {
+                                x: currentDate
+                            }
+                        }
+                    }
+                }
+            }
+        });
     },
     beforeDestroy: function () {
         this.chart.destroy();

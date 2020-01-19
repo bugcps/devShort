@@ -30,29 +30,29 @@ Vue.component('chart', {
         }
     },
     template: template,
-    mounted: function () {
-        let dataset = [];
-        for (let [unixTimestamp, count] of Object.entries(this.stats)) {
-            let timestamp = new Date(unixTimestamp * 1000);
-            if (((currentDate - timestamp) / (60 * 60 * 24 * 1000)) <= 7) {
-                this.accessCount.sevenDays += count;
-            }
-            this.accessCount.total += count;
-            dataset.push({ x: timestamp, y: count });
-        }
-        new frappe.Chart('div#' + this.chartId, {
-            type: 'heatmap',
-            title: 'Access statistics for ' + this.name,
-            data: {
-                dataPoints: this.stats,
-                start: startDate,
-                end: currentDate
-            },
-            countLabel: 'Accesses',
-            discreteDomains: 0
-        });
-    },
     methods: {
+        render: function () {
+            let dataset = [];
+            for (let [unixTimestamp, count] of Object.entries(this.stats)) {
+                let timestamp = new Date(unixTimestamp * 1000);
+                if (((currentDate - timestamp) / (60 * 60 * 24 * 1000)) <= 7) {
+                    this.accessCount.sevenDays += count;
+                }
+                this.accessCount.total += count;
+                dataset.push({ x: timestamp, y: count });
+            }
+            new frappe.Chart('div#' + this.chartId, {
+                type: 'heatmap',
+                title: 'Access statistics for ' + this.name,
+                data: {
+                    dataPoints: this.stats,
+                    start: startDate,
+                    end: currentDate
+                },
+                countLabel: 'Accesses',
+                discreteDomains: 0
+            });
+        },
         remove: function (event) {
             post('admin.php?delete', {
                 name: this.name
@@ -68,6 +68,14 @@ Vue.component('chart', {
         shortlinkUrl: function () {
             return this.$parent.dataObject.shortlinks[this.name];
         }
+    },
+    watch: {
+        stats: function () {
+            this.render();
+        }
+    },
+    mounted: function () {
+        this.render();
     }
 });
 

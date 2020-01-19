@@ -39,7 +39,7 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         $stats_content[$filtered["name"]] = array();
     }
     file_put_contents($config_path, json_encode($config_content, JSON_PRETTY_PRINT));
-    file_put_contents($stats_path, json_encode($stats_content));
+    file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
     header("Content-Type: application/json");
     echo "{\"status\": \"successful\"}";
     exit;

@@ -18,9 +18,9 @@ $stats_content = json_decode(file_get_contents($stats_path), true);
 // Count the access to the given $name
 function count_access($name) {
     global $stats_path, $stats_content;
-    
-    $stats_content[$name][mktime(0, 0, 0)] += 1;
-    file_put_contents($stats_path, json_encode($stats_content));
+
+    $stats_content[$name][date("Y-m-d")] += 1;
+    file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
 }
 
 if (array_key_exists($short, $config_content["shortlinks"])) {

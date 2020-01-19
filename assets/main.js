@@ -33,13 +33,13 @@ Vue.component('chart', {
     methods: {
         render: function () {
             let dataset = [];
-            for (let [unixTimestamp, count] of Object.entries(this.stats)) {
-                let timestamp = new Date(unixTimestamp * 1000);
-                if (((currentDate - timestamp) / (60 * 60 * 24 * 1000)) <= 7) {
+            for (let [isoDate, count] of Object.entries(this.stats)) {
+                let date = new Date(isoDate);
+                if (((currentDate - date) / (60 * 60 * 24 * 1000)) <= 7) {
                     this.accessCount.sevenDays += count;
                 }
                 this.accessCount.total += count;
-                dataset.push({ x: timestamp, y: count });
+                dataset.push({ x: date, y: count });
             }
             new frappe.Chart('div#' + this.chartId, {
                 type: 'heatmap',

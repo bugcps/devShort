@@ -2,7 +2,6 @@
 const currentDate = new Date();
 const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
 const spinner = document.getElementById('spinner');
-const statusDiv = document.getElementById('status');
 const template = document.getElementById('chart-template');
 const version = "v3.0.0";
 
@@ -130,10 +129,13 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
             document.getElementById('name').value = '';
             document.getElementById('url').value = 'https://';
             vm.loadData();
+			document.getElementById('status').innerHTML = "";
         } else if (data.status === 'unvalid-url') {
-            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
+            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
+        } else if (data.status === 'url-already-exists') {
+            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">URL already exists. Please delete before readding.</div>');
         } else {
-            statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
+            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
         }
     });
 });
@@ -149,3 +151,4 @@ fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then
     document.getElementById('version-1').insertAdjacentHTML('beforeend', inner);
     document.getElementById('version-2').insertAdjacentHTML('beforeend', inner);
 });
+

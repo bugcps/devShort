@@ -1,17 +1,16 @@
-/* Register variables */
+// Register variables
 const currentDate = new Date();
 const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));
 const spinner = document.getElementById('spinner');
-const chartsDiv = document.getElementById('charts');
 const statusDiv = document.getElementById('status');
+const template = document.getElementById('chart-template');
 const version = "v3.0.0";
 
-/* Helper function to post to page api */
+// Helper function to post to page api
 function post(url, data) {
     'use strict';
     return fetch(url, {
         method: 'POST',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -21,11 +20,108 @@ function post(url, data) {
     });
 }
 
-/* Add a new shortlink */
+// Vue chart component
+Vue.component('chart', {
+    props: ['name', 'stats'],
+    data: function () {
+        return {
+            identifier: Math.floor(Math.random() * 10000),
+            accessCount: { sevenDays: 0, total: 0 }
+        }
+    },
+    template: template,
+    methods: {
+        render: function () {
+            let dataset = [];
+            this.accessCount = { sevenDays: 0, total: 0 };
+            for (let [isoDate, count] of Object.entries(this.stats)) {
+                let date = new Date(isoDate);
+                if (((currentDate - date) / (60 * 60 * 24 * 1000)) <= 7) {
+                    this.accessCount.sevenDays += count;
+                }
+                this.accessCount.total += count;
+                dataset.push({ x: date, y: count });
+            }
+            new frappe.Chart('div#' + this.chartId, {
+                type: 'heatmap',
+                title: 'Access statistics for ' + this.name,
+                data: {
+                    dataPoints: this.stats,
+                    start: startDate,
+                    end: currentDate
+                },
+                countLabel: 'Accesses',
+                discreteDomains: 0
+            });
+        },
+        remove: function (event) {
+            post('admin.php?delete', {
+                name: this.name
+            }).then(function (response) {
+                vm.loadData();
+            });
+        }
+    },
+    computed: {
+        chartId: function () {
+            return 'heatmap-' + this.identifier;
+        },
+        shortlinkUrl: function () {
+            return this.$parent.dataObject.shortlinks[this.name];
+        }
+    },
+    watch: {
+        stats: function () {
+            this.render();
+        }
+    },
+    mounted: function () {
+        this.render();
+    }
+});
+
+// Vue app instance
+var vm = new Vue({
+    el: '#app',
+    data: {
+        dataObject: [],
+        loaded: false,
+        search: ''
+    },
+    methods: {
+        loadData: function (event) {
+            if (event) {
+                // When calling this function via a card-link
+                event.preventDefault();
+            }
+            this.loaded = false;
+            var vm = this;
+            fetch('admin.php?get_data')
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    vm.dataObject = data
+                });
+            this.loaded = true;
+        },
+        displayStyle: function (name) {
+            if (!name.toLowerCase().includes(this.search.toLowerCase())) {
+                return 'display: none;'
+            } else {
+                return 'display: block;'
+            }
+        }
+    },
+    created: function () {
+        this.loadData();
+    }
+});
+
+// Add a new shortlink
 document.getElementById('add-form').addEventListener('submit', function (event) {
     'use strict';
     event.preventDefault();
-    spinner.style.display = '';
     post('admin.php?add', {
         name: document.getElementById('name').value,
         url: document.getElementById('url').value
@@ -33,43 +129,16 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
         if (data.status === 'successful') {
             document.getElementById('name').value = '';
             document.getElementById('url').value = 'https://';
-            if (statusDiv.firstChild) {
-                statusDiv.firstChild.remove();
-            }
-            getCharts();
+            vm.loadData();
         } else if (data.status === 'unvalid-url') {
             statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
         } else {
             statusDiv.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
         }
     });
-    spinner.style.display = 'none';
 });
 
-/* Provide search functionality */
-var searchBox = document.getElementById('search-bar');
-searchBox.addEventListener('input', function (event) {
-    'use strict';
-    for (let node of chartsDiv.childNodes) {
-        let linkName = node.firstElementChild.innerHTML.toLowerCase();
-        if (linkName.includes(searchBox.value.toLowerCase())) {
-            node.style.display = 'block';
-        } else {
-            node.style.display = 'none';
-        }
-    }
-});
-
-/* Refresh charts */
-function refreshCharts(event) {
-    'use strict';
-    event.preventDefault();
-    getCharts();
-}
-document.getElementById('refresh-1').addEventListener('click', refreshCharts);
-document.getElementById('refresh-2').addEventListener('click', refreshCharts);
-
-/* Check for updates */
+// Check for updates
 fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then(function (response) {
     return response.json();
 }).then(function (json) {
@@ -80,53 +149,3 @@ fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then
     document.getElementById('version-1').insertAdjacentHTML('beforeend', inner);
     document.getElementById('version-2').insertAdjacentHTML('beforeend', inner);
 });
-
-/* Get charts and date (remove old when necessary) */
-function getCharts() {
-    'use strict';
-    spinner.style.display = 'block';
-    while (chartsDiv.firstChild) {
-        chartsDiv.firstChild.remove();
-    }
-    fetch('admin.php?get_stats').then(function (response) {
-        return response.json();
-    }).then(function (json) {
-        for (let [name, data] of Object.entries(json)) {
-            chartsDiv.insertAdjacentHTML('beforeend', `<div id="card-${name}" class="card text-center mb-3">
-    <div class="card-header">${name}</div>
-    <div class="card-body p-2">
-        <div id="heatmap-${name}" class="overflow-auto"></div>
-    </div>
-    <div class="card-footer text-muted">
-        <a id="export-${name}" href="#export" class="card-link">Export chart</a><a id="delete-${name}" href="#delete" class="card-link">Delete shortlink and dataset</a>
-    </div>
-</div>`);
-            let heatmap = new frappe.Chart('div#heatmap-' + name, {
-                type: 'heatmap',
-                title: 'Access statistics for ' + name,
-                data: {
-                    dataPoints: data,
-                    start: startDate,
-                    end: currentDate
-                },
-                countLabel: 'Access(es)',
-                discreteDomains: 0
-            });
-            document.getElementById('export-' + name).addEventListener('click', function (event) {
-                event.preventDefault();
-                heatmap.export();
-            });
-            document.getElementById('delete-' + name).addEventListener('click', function (event) {
-                event.preventDefault();
-                post('admin.php?delete', {
-                    name: name
-                }).then(function () {
-                    document.getElementById('card-' + name).remove();
-                });
-            });
-        }
-        spinner.style.display = 'none';
-    });
-}
-
-getCharts();

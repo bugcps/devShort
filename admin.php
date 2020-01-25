@@ -15,18 +15,11 @@ if (!isset($_SESSION["user_authenticated"])) {
 }
 
 // Deliver stats.json content for the program (make AJAX calls and charts reloading possible)
-if (isset($_GET["get_stats"])) {
+if (isset($_GET["get_data"])) {
     header("Content-Type: application/json");
-    readfile($stats_path);
+    $content = array("shortlinks" => $config_content["shortlinks"], "stats" => $stats_content);
+    echo json_encode($content);
     exit;
-}
-
-// Filter the names that the admin interface doesn't break
-function filter_name($nameRaw) {
-    $name = filter_var($nameRaw, FILTER_SANITIZE_STRING);
-    $name = str_replace(" ", "-", $name);
-    $name = preg_replace("/[^A-Za-z0-9-_]/", "", $name);
-    return $name;
 }
 
 // API functions to delete and add the shortlinks via the admin panel
@@ -36,7 +29,7 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         unset($config_content["shortlinks"][$data["name"]]);
         unset($stats_content[$data["name"]]);
     } else if (isset($_GET["add"])) {
-        $filtered = array("name" => filter_name($data["name"]),
+        $filtered = array("name" => filter_var($data["name"], FILTER_SANITIZE_STRING),
                           "url" => filter_var($data["url"], FILTER_SANITIZE_URL));
         if (!filter_var($filtered["url"], FILTER_VALIDATE_URL)) {
             echo "{\"status\": \"unvalid-url\"}";
@@ -46,7 +39,7 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         $stats_content[$filtered["name"]] = array();
     }
     file_put_contents($config_path, json_encode($config_content, JSON_PRETTY_PRINT));
-    file_put_contents($stats_path, json_encode($stats_content));
+    file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
     header("Content-Type: application/json");
     echo "{\"status\": \"successful\"}";
     exit;
@@ -83,12 +76,12 @@ if ($config_content["settings"]["custom_links"]) {
         <div class="container">
             <h1 class="mt-5 text-center"><?php echo $config_content["settings"]["name"]; ?></h1>
             <h4 class="mb-4 text-center">admin panel</h4>
-            <div class="row">
+            <div class="row" id="app">
                 <div class="col-md-4 col-lg-3">
                     <div class="card d-none d-md-block mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Tools</h5>
-                            <a class="card-link" id="refresh-1" href="#refresh">Refresh charts</a>
+                            <a class="card-link" href="#reload" v-on:click="loadData">Reload charts</a>
                             <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
@@ -113,7 +106,7 @@ if ($config_content["settings"]["custom_links"]) {
                         <div class="card-body">
                             <h5 class="card-title">Search</h5>
                             <form>
-                                <input class="form-control" id="search-bar" type="text">
+                                <input class="form-control" type="text" v-model="search">
                             </form>
                         </div>
                     </div>
@@ -124,18 +117,18 @@ if ($config_content["settings"]["custom_links"]) {
                     </div>
                     <div class="card d-md-none mb-3">
                         <div class="card-body text-center">
-                            <a class="card-link" id="refresh-2" href="#refresh">Refresh charts</a>
+                            <a class="card-link" href="#reload" v-on:click="loadData">Reload charts</a>
                             <a class="card-link" href="admin-auth.php?logout">Logout</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8 col-lg-9">
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border text-primary my-4" id="spinner" role="status">
+                    <div class="d-flex justify-content-center" v-if="!loaded">
+                        <div class="spinner-border text-primary my-4" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <div id="charts"></div>
+                    <chart v-for="(stats, name) in dataObject.stats" v-bind:key="name" :style="displayStyle(name)" v-bind:name="name" v-bind:stats="stats" v-else></chart>
                 </div>
             </div>
             <p class="text-center d-md-none mt-1 mb-5" id="version-2">powered by <a href="https://github.com/flokX/devShort">devShort</a></p>
@@ -151,7 +144,44 @@ if ($config_content["settings"]["custom_links"]) {
         </div>
     </footer>
 
+    <template id="chart-template">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <h3 class="card-title mb-0">{{ name }}</h3>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center">
+                        <span>{{ accessCount.sevenDays }} <small class="text-muted">Accesses last 7 days</small> | {{ accessCount.total }} <small class="text-muted">Accesses in total</small></span>
+                    </div>
+                </div>
+                <hr>
+                <div class="overflow-auto" :id="chartId"></div>
+                <hr>
+                <p class="text-center text-muted mb-0" v-if="this.name === 'Index'">Index is an internal entry. It counts the number of front page accesses.</p>
+                <p class="text-center text-muted mb-0" v-else-if="this.name === '404-request'">404-request is an internal entry. It counts the number of accesses to non-existent shortlinks.</p>
+                <div class="row" v-else>
+                    <div class="col-lg-9">
+                        <label class="sr-only" :for="'destination-' + this.identifier">URL (destination)</label>
+                        <div class="input-group">
+                            <input class="form-control" :id="'destination-' + this.identifier" type="url" :value="shortlinkUrl" readonly>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <a :href="shortlinkUrl" target="_blank" rel="noopener">open</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mt-2 mt-lg-0 text-center">
+                        <button type="button" class="btn btn-outline-danger" v-on:click="remove">Delete shortlink</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
     <script src="assets/vendor/frappe-charts/frappe-charts.min.iife.js"></script>
+    <script src="assets/vendor/vue/vue.min.js"></script>
     <script src="assets/main.js"></script>
 
 </body>

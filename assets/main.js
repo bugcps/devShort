@@ -33,6 +33,7 @@ Vue.component('chart', {
     methods: {
         render: function () {
             let dataset = [];
+            this.accessCount = { sevenDays: 0, total: 0 };
             for (let [isoDate, count] of Object.entries(this.stats)) {
                 let date = new Date(isoDate);
                 if (((currentDate - date) / (60 * 60 * 24 * 1000)) <= 7) {

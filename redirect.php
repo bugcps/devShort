@@ -2,7 +2,7 @@
 
 // All relevant changes can be made in the data file. Please read the docs: https://github.com/flokX/devShort/wiki
 
-$short = htmlspecialchars($_GET["short"]);
+$short = strtolower(htmlspecialchars($_GET["short"]));
 
 $return_404 = array("favicon.ico", "assets/vendor/bootstrap/bootstrap.min.css.map", "assets/vendor/frappe-charts/frappe-charts.min.iife.js.map");
 if (in_array($short, $return_404)) {

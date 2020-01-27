@@ -129,7 +129,7 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
             document.getElementById('name').value = '';
             document.getElementById('url').value = 'https://';
             vm.loadData();
-			document.getElementById('status').innerHTML = "";
+            document.getElementById('status').innerHTML = '';
         } else if (data.status === 'unvalid-url') {
             document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
         } else if (data.status === 'url-already-exists') {
@@ -151,4 +151,3 @@ fetch('https://devshort.flokX.dev/api.php?mode=version&current=' + version).then
     document.getElementById('version-1').insertAdjacentHTML('beforeend', inner);
     document.getElementById('version-2').insertAdjacentHTML('beforeend', inner);
 });
-

@@ -29,7 +29,7 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
         unset($config_content["shortlinks"][$data["name"]]);
         unset($stats_content[$data["name"]]);
     } else if (isset($_GET["add"])) {
-        $filtered = array("name" => filter_var($data["name"], FILTER_SANITIZE_STRING),
+        $filtered = array("name" => strtolower(filter_var($data["name"], FILTER_SANITIZE_STRING)),
                           "url" => filter_var($data["url"], FILTER_SANITIZE_URL));
         if (!filter_var($filtered["url"], FILTER_VALIDATE_URL)) {
             echo "{\"status\": \"unvalid-url\"}";

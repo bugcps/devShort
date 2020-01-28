@@ -35,6 +35,10 @@ if (isset($_GET["delete"]) || isset($_GET["add"])) {
             echo "{\"status\": \"unvalid-url\"}";
             exit;
         }
+        if (array_key_exists($filtered["name"], $config_content["shortlinks"])) {
+            echo "{\"status\": \"url-already-exists\"}";
+            exit;
+        }
         $config_content["shortlinks"][$filtered["name"]] = $filtered["url"];
         $stats_content[$filtered["name"]] = array();
     }

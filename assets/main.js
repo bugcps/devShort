@@ -131,11 +131,11 @@ document.getElementById('add-form').addEventListener('submit', function (event) 
             vm.loadData();
             document.getElementById('status').innerHTML = '';
         } else if (data.status === 'unvalid-url') {
-            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Unvalid URL. Please provide a valid URL.</div>');
+            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger mt-2" role="alert">Unvalid URL. Please provide a valid URL.</div>');
         } else if (data.status === 'url-already-exists') {
-            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">URL already exists. Please delete before readding.</div>');
+            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger mt-2" role="alert">Shortlink already exists. Please delete before readding.</div>');
         } else {
-            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">Error. Please try again.</div>');
+            document.getElementById('status').insertAdjacentHTML('afterbegin', '<div class="alert alert-danger mt-2" role="alert">Error. Please try again.</div>');
         }
     });
 });

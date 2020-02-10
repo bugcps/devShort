@@ -161,7 +161,7 @@ if ($config_content["settings"]["custom_links"]) {
                 <hr>
                 <div class="overflow-auto" :id="chartId"></div>
                 <hr>
-                <p class="text-center text-muted mb-0" v-if="this.name === 'Index'">Index is an internal entry. It counts the number of front page accesses.</p>
+                <p class="text-center text-muted mb-0" v-if="this.name === 'index'">Index is an internal entry. It counts the number of front page accesses.</p>
                 <p class="text-center text-muted mb-0" v-else-if="this.name === '404-request'">404-request is an internal entry. It counts the number of accesses to non-existent shortlinks.</p>
                 <div class="row" v-else>
                     <div class="col-lg-9">

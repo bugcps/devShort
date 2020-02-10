@@ -4,7 +4,7 @@
 
 $short = strtolower(htmlspecialchars($_GET["short"]));
 
-$return_404 = array("favicon.ico", "assets/vendor/bootstrap/bootstrap.min.css.map", "assets/vendor/frappe-charts/frappe-charts.min.iife.js.map");
+$return_404 = array("assets/vendor/bootstrap/bootstrap.min.css.map", "assets/vendor/frappe-charts/frappe-charts.min.iife.js.map");
 if (in_array($short, $return_404)) {
     header("HTTP/1.1 404 Not Found");
     exit;

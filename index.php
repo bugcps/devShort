@@ -8,7 +8,7 @@ $stats_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "stats.json"))
 $stats_content = json_decode(file_get_contents($stats_path), true);
 
 // Count the access
-$stats_content["Index"][date("Y-m-d")] += 1;
+$stats_content["index"][date("Y-m-d")] += 1;
 file_put_contents($stats_path, json_encode($stats_content, JSON_PRETTY_PRINT));
 
 // Generate custom buttons for the footer

@@ -33,7 +33,6 @@ if ($config_content["settings"]["custom_links"]) {
     <link href="<?php echo $config_content["settings"]["favicon"]; ?>" rel="icon">
     <title><?php echo $config_content["settings"]["name"]; ?></title>
     <link href="assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/main.css" rel="stylesheet">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -61,7 +60,7 @@ if ($config_content["settings"]["custom_links"]) {
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
-                <span class="text-muted">&copy; <?php echo date("Y") . " " . $config_content["settings"]["author"]; ?> and <a href="https://github.com/flokX/devShort">devShort</a></span>
+                <span class="text-muted">&copy; 2020 <?php $config_content["settings"]["author"]; ?> and <a href="https://github.com/flokX/devShort">devShort</a></span>
                 <?php if ($links_string) { echo "<span class=\"text-muted\">$links_string</span>"; } ?>
             </div>
         </div>

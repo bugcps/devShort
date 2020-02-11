@@ -31,13 +31,11 @@ What is a URL shortener? Visit our [wiki article](https://github.com/flokX/devSh
 3. Have no hassle with the software because it's slim and easy to configure
 
 
-## 1-2-3 Click installation
+## 1-2-3 Step installation
 
 1. Download the latest [release](https://github.com/flokX/devShort/releases) and upload it to the desired installation place
 2. Insert a admin password in the `admin/config.json`
-3. Run the `installer.php`
-
-That's it! If you want to know what else devShort can do, visit our [wiki](https://github.com/flokX/devShort/wiki).
+3. Start using devShort! If you want to know what else devShort can do, visit our [wiki](https://github.com/flokX/devShort/wiki).
 
 
 ## Screenshots
@@ -46,13 +44,13 @@ To see devShort live and in action check out our [demo](https://devshort.flokx.d
 
 | Admin panel | Index       |
 |:-----------:|:-----------:|
-| ![Screenshot - Admin panel](https://raw.githubusercontent.com/flokX/devShort/master/development/admin-panel.png) | ![Screenshot - Index](https://raw.githubusercontent.com/flokX/devShort/master/development/index.png) |
+| ![Screenshot - Admin panel](https://devshort.flokx.dev/screenshots/admin-panel.png) | ![Screenshot - Index](https://devshort.flokx.dev/screenshots/index.png) |
 
 
 ## About
 
-Maintainer:  [flokX](https://github.com/flokX)
+Maintainer: [flokX](https://github.com/flokX), Contributors: [René Wagner](https://github.com/guzzisti)
 
-License: The MIT license
+License: [The MIT License](https://github.com/flokX/devShort/blob/master/LICENSE)
 
-Third-party credits: [IO-Images](https://pixabay.com/users/io-images-1096650); [Bootstrap](https://getbootstrap.com) and [Frappe Charts](https://github.com/frappe/charts)
+Third-party credits: [Vue.js](https://vuejs.org/), [Bootstrap](https://getbootstrap.com), [Frappe Charts](https://github.com/frappe/charts) and [IO-Images](https://pixabay.com/users/io-images-1096650), 

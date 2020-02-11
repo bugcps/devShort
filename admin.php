@@ -1,6 +1,6 @@
 <?php
 
-// All relevant changes can be made in the data file. Please read the docs: https://github.com/flokX/devShort/wiki
+// This file is part of the devShort project under the MIT License. Visit https://github.com/flokX/devShort for more information.
 
 $config_path = implode(DIRECTORY_SEPARATOR, array(__DIR__, "data", "config.json"));
 $config_content = json_decode(file_get_contents($config_path), true);

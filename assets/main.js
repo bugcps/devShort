@@ -1,3 +1,5 @@
+// This file is part of the devShort project under the MIT License. Visit https://github.com/flokX/devShort for more information.
+
 // Register variables
 const currentDate = new Date();
 const startDate = new Date(new Date().setFullYear(currentDate.getFullYear() - 1));

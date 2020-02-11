@@ -1,6 +1,6 @@
 <?php
 
-// All relevant changes can be made in the data file. Please read the docs: https://github.com/flokX/devShort/wiki
+// This file is part of the devShort project under the MIT License. Visit https://github.com/flokX/devShort for more information.
 
 session_start();
 $incorrect_password = false;

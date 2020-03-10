@@ -1,7 +1,7 @@
 {
     "installer": {
         "username": "admin",
-        "password": ""
+        "password": "Grupo2be"
     },
     "settings": {
         "name": "devShort shortlink service",
